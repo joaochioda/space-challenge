@@ -14,7 +14,7 @@ const io = new Server(server, {
 const players = [];
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World from my pc");
 });
 
 io.on("connection", (socket) => {
