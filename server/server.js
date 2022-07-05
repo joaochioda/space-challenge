@@ -3,21 +3,26 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const Game = require("./src/models/Game");
+
 const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
 
+const players = [];
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
 io.on("connection", (socket) => {
-  socket.on("test", () => {
-    console.log("chegou", socket.id);
-  });
-  console.log("a user connected");
+  players.push(socket);
+  if (players.length === 2) {
+    console.log("game started");
+    new Game(players);
+  }
 });
 
 server.listen(3333, () => {
