@@ -1,5 +1,5 @@
 ## What is this
-This game is about a fight between two spaceships against meteros and monsters
+This game is about a fight between two spaceships against meteors and monsters
 
 You can controll one spaceship and your opponent (AI or HUMAN) the other.
 
