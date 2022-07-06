@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   players.push(socket);
   console.log("a user connected");
-
+  console.log(players.length);
   if (players.length === 2) {
     console.log("game started");
     new Game(players);

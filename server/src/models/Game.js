@@ -14,16 +14,16 @@ class Game {
   }
 
   sendDataTofront() {
-    const data = {
-      playerA: {
+    const data = [
+      {
         x: this.playerA.x,
         y: this.playerA.y,
       },
-      playerB: {
+      {
         x: this.playerB.x,
         y: this.playerB.y,
       },
-    };
+    ];
     this.playerA.socket.emit("gameData", data);
     this.playerB.socket.emit("gameData", data);
   }
