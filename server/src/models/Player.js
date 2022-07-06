@@ -1,18 +1,20 @@
+const velocity = 5;
+
 const mapMoves = {
   up: {
     x: 0,
-    y: -0.1,
+    y: -velocity,
   },
   down: {
     x: 0,
-    y: 0.1,
+    y: velocity,
   },
   left: {
-    x: -0.1,
+    x: -velocity,
     y: 0,
   },
   right: {
-    x: 0.1,
+    x: velocity,
     y: 0,
   },
 };
@@ -24,17 +26,19 @@ class Player {
     this.score = 0;
     this.life = 100;
     this.isAlive = true;
-    this.limit_x_start = player === "a" ? 0 : 500;
-    this.limit_x_end = player === "a" ? 500 : 1000;
-    this.limit_y = 500;
-    this.x = player === "a" ? 0 : 500;
-    this.y = 0;
+    this.limit_x_start = 0;
+    this.limit_x_end = 500;
+    this.limit_y_start = player === "a" ? 0 : 500;
+    this.limit_y_end = player === "a" ? 500 : 1000;
+    this.x = 0;
+    this.y = player === "a" ? 0 : 500;
     this.velocity = {
       x: 0,
       y: 0,
     };
 
     this.socket.on("move", (data) => {
+      console.log("move", data);
       this.handleMovimentation(data);
     });
   }
@@ -49,8 +53,8 @@ class Player {
       this.x = this.x;
     }
     if (
-      this.y + this.velocity.y > 0 &&
-      this.y + this.velocity.y < this.limit_y
+      this.y + this.velocity.y > this.limit_y_start &&
+      this.y + this.velocity.y < this.limit_y_end
     ) {
       this.y += this.velocity.y;
     } else {
