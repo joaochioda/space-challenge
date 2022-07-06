@@ -19,10 +19,19 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   players.push(socket);
+  console.log("a user connected");
+
   if (players.length === 2) {
     console.log("game started");
     new Game(players);
   }
+  socket.on("ping", (callback) => {
+    callback();
+  });
+
+  socket.on("test", (data) => {
+    console.log("------test------");
+  });
 });
 
 server.listen(3333, () => {
