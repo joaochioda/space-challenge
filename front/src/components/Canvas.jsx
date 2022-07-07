@@ -23,7 +23,7 @@ const Canvas = props => {
         }
     }, [draw])
 
-    return <canvas tabIndex="0" ref={canvasRef} {...rest} width={800} height={600} onKeyDown={(e) => props.handleKeyDownCustom(e)} />
+    return <canvas tabIndex="0" ref={canvasRef} {...rest} width={800} height={620} onKeyDown={(e) => props.handleKeyDownCustom(e)} />
 }
 
 export default Canvas

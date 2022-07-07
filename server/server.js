@@ -12,7 +12,7 @@ const io = new Server(server, {
 });
 
 const players = [];
-
+let games = [];
 app.get("/", (req, res) => {
   res.send("Hello World from my pc");
 });
@@ -23,7 +23,8 @@ io.on("connection", (socket) => {
   console.log(players.length);
   if (players.length === 2) {
     console.log("game started");
-    new Game(players);
+    const game = new Game(players);
+    games = game;
   }
   socket.on("ping", (callback) => {
     callback();
@@ -31,6 +32,9 @@ io.on("connection", (socket) => {
 
   socket.on("test", (data) => {
     console.log("------test------");
+  });
+  socket.on("disconnect", () => {
+    players.splice(players.indexOf(socket), 1);
   });
 });
 
