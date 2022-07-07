@@ -14,6 +14,8 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [ping, setPing] = useState(0);
   const [data, setData] = useState([]);
+  const [direction, setDirection] = useState(null);
+
   useEffect(() => {
     const newSocket = io(`http://localhost:3333`);
     setSocket(newSocket);
@@ -32,7 +34,7 @@ function App() {
     return () => newSocket.close();
   }, [setSocket]);
 
-  const draw = (ctx, frameCount) => {
+  const draw = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = "#000000";
     ctx.beginPath();
@@ -43,7 +45,10 @@ function App() {
   };
 
   const handleKeyDownCustom = (e) => {
-    socket.emit("move", keyMap[e.key]);
+    if (direction !== keyMap[e.key]) {
+      socket.emit("move", keyMap[e.key]);
+      setDirection(keyMap[e.key]);
+    }
   };
 
   return (

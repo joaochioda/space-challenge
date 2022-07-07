@@ -1,24 +1,8 @@
-const velocity = 5;
+const maxAccelerationX = 3;
+const maxAccelerationY = 3;
 
-const mapMoves = {
-  up: {
-    x: 0,
-    y: -velocity,
-  },
-  down: {
-    x: 0,
-    y: velocity,
-  },
-  left: {
-    x: -velocity,
-    y: 0,
-  },
-  right: {
-    x: velocity,
-    y: 0,
-  },
-};
-
+const maxXScreen = 500;
+const maxYScreen = 300;
 class Player {
   constructor(socket, player) {
     this.socket = socket;
@@ -27,44 +11,77 @@ class Player {
     this.life = 100;
     this.isAlive = true;
     this.limit_x_start = 0;
-    this.limit_x_end = 500;
-    this.limit_y_start = player === "a" ? 0 : 500;
-    this.limit_y_end = player === "a" ? 500 : 1000;
+    this.limit_x_end = maxXScreen;
+    this.limit_y_start = player === "a" ? 0 : maxYScreen;
+    this.limit_y_end = player === "a" ? maxYScreen : maxYScreen * 2;
     this.x = 0;
-    this.y = player === "a" ? 0 : 500;
-    this.velocity = {
+    this.y = player === "a" ? 0 : maxYScreen;
+    this.direction = null;
+    this.lastMove_y = 0; //1 = up, -1 = down
+    this.acceleration = {
       x: 0,
       y: 0,
     };
-
     this.socket.on("move", (data) => {
-      console.log("move", data);
       this.handleMovimentation(data);
     });
   }
 
   move() {
-    if (
-      this.x + this.velocity.x > this.limit_x_start &&
-      this.x + this.velocity.x < this.limit_x_end
-    ) {
-      this.x += this.velocity.x;
-    } else {
-      this.x = this.x;
+    if (this.direction) {
+      if (this.direction === "up") {
+        this.acceleration.y -= 0.1;
+        if (this.acceleration.y < -maxAccelerationY) {
+          this.acceleration.y = -maxAccelerationY;
+        }
+      } else if (this.direction === "down") {
+        this.acceleration.y += 0.1;
+        if (this.acceleration.y > maxAccelerationY) {
+          this.acceleration.y = maxAccelerationY;
+        }
+      } else if (this.direction === "left") {
+        this.acceleration.x -= 0.1;
+        if (this.acceleration.x < -maxAccelerationX) {
+          this.acceleration.x = -maxAccelerationX;
+        }
+      } else if (this.direction === "right") {
+        this.acceleration.x += 0.1;
+        if (this.acceleration.x > maxAccelerationX) {
+          this.acceleration.x = maxAccelerationX;
+        }
+      }
     }
-    if (
-      this.y + this.velocity.y > this.limit_y_start &&
-      this.y + this.velocity.y < this.limit_y_end
-    ) {
-      this.y += this.velocity.y;
-    } else {
-      this.y = this.y;
+
+    if (this.x + this.acceleration.x > this.limit_x_end) {
+      this.x = this.limit_x_end;
+      this.acceleration.x = 0;
     }
+    if (this.x + this.acceleration.x < this.limit_x_start) {
+      this.x = this.limit_x_start;
+      this.acceleration.x = 0;
+    }
+    if (this.y + this.acceleration.y > this.limit_y_end) {
+      this.y = this.limit_y_end;
+      this.acceleration.y = 0;
+    }
+    if (this.y + this.acceleration.y < this.limit_y_start) {
+      this.y = this.limit_y_start;
+      this.acceleration.y = 0;
+    }
+
+    this.x += this.acceleration.x;
+    this.y += this.acceleration.y;
   }
 
   handleMovimentation(data) {
-    if (data in mapMoves) {
-      this.velocity = mapMoves[data];
+    const mapMoves = {
+      up: "up",
+      down: "down",
+      left: "left",
+      right: "right",
+    };
+    if (mapMoves[data]) {
+      this.direction = mapMoves[data];
     }
   }
 }
