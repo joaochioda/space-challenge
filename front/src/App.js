@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     //const newSocket = io(`meu-ip:3333`); connect through internet
-    const newSocket = io(`http://localhost:3333`);
+    const newSocket = io(`localhost:3333`);
     setSocket(newSocket);
     sendMove(newSocket);
     setInterval(() => {
@@ -79,9 +79,15 @@ function App() {
         ctx.stroke();
       }
       ctx.beginPath();
-      ctx.strokeStyle = "black";
-      ctx.rect(player.x, player.y, 10, 10);
-      ctx.stroke();
+      if (player.id === socket.id) {
+        ctx.strokeStyle = "blue";
+        ctx.rect(player.x, player.y, 10, 10);
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = "red";
+        ctx.rect(player.x, player.y, 10, 10);
+        ctx.stroke();
+      }
     });
   };
 

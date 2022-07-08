@@ -18,6 +18,7 @@ const Canvas = props => {
         }
         render()
 
+        document.getElementById('canvas').focus();
         return () => {
             window.cancelAnimationFrame(animationFrameId)
         }
@@ -26,6 +27,7 @@ const Canvas = props => {
     return (
 
         <canvas
+            id="canvas"
             tabIndex="0"
             ref={canvasRef} {...rest}
             width={800}
