@@ -126,7 +126,6 @@ class Player {
             : acceleration + this.acceleration.y,
       },
     };
-    console.log(data);
     if (mapMoves[data]) {
       this.acceleration = mapMoves[data];
       this.movimentation = data;

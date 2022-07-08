@@ -19,12 +19,14 @@ class Game {
       {
         x: this.playerA.x,
         y: this.playerA.y,
+        id: this.playerA.id,
         shoots: this.playerA.shoots,
         movimentation: this.playerA.movimentation,
       },
       {
         x: this.playerB.x,
         y: this.playerB.y,
+        id: this.playerB.id,
         shoots: this.playerB.shoots,
         movimentation: this.playerB.movimentation,
       },
