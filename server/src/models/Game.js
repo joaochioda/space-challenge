@@ -1,4 +1,5 @@
 const Player = require("./Player");
+
 class Game {
   constructor(players) {
     this.playerA = new Player(players[0], "a");
@@ -18,10 +19,14 @@ class Game {
       {
         x: this.playerA.x,
         y: this.playerA.y,
+        shoots: this.playerA.shoots,
+        movimentation: this.playerA.movimentation,
       },
       {
         x: this.playerB.x,
         y: this.playerB.y,
+        shoots: this.playerB.shoots,
+        movimentation: this.playerB.movimentation,
       },
     ];
     this.playerA.socket.emit("gameData", data);

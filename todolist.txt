@@ -1,7 +1,5 @@
 [Front]
-Render objects
 
 [Server]
 Spawn enemies
-Spawn laser shots
 Collision
