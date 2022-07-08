@@ -1,8 +1,13 @@
+const Shot = require("./Shot");
+
 const maxAccelerationX = 3;
 const maxAccelerationY = 3;
 
+const acceleration = 0.3;
+
 const maxXScreen = 500;
 const maxYScreen = 300;
+
 class Player {
   constructor(socket, player) {
     this.socket = socket;
@@ -17,41 +22,22 @@ class Player {
     this.x = 0;
     this.y = player === "a" ? 0 : maxYScreen;
     this.direction = null;
-    this.lastMove_y = 0; //1 = up, -1 = down
+    this.movimentation = ""; //1 = up, -1 = down
     this.acceleration = {
       x: 0,
       y: 0,
     };
+    this.shoots = [];
+
     this.socket.on("move", (data) => {
       this.handleMovimentation(data);
+    });
+    this.socket.on("shoot", (data) => {
+      this.shoot();
     });
   }
 
   move() {
-    if (this.direction) {
-      if (this.direction === "up") {
-        this.acceleration.y -= 0.1;
-        if (this.acceleration.y < -maxAccelerationY) {
-          this.acceleration.y = -maxAccelerationY;
-        }
-      } else if (this.direction === "down") {
-        this.acceleration.y += 0.1;
-        if (this.acceleration.y > maxAccelerationY) {
-          this.acceleration.y = maxAccelerationY;
-        }
-      } else if (this.direction === "left") {
-        this.acceleration.x -= 0.1;
-        if (this.acceleration.x < -maxAccelerationX) {
-          this.acceleration.x = -maxAccelerationX;
-        }
-      } else if (this.direction === "right") {
-        this.acceleration.x += 0.1;
-        if (this.acceleration.x > maxAccelerationX) {
-          this.acceleration.x = maxAccelerationX;
-        }
-      }
-    }
-
     if (this.x + this.acceleration.x > this.limit_x_end) {
       this.x = this.limit_x_end;
       this.acceleration.x = 0;
@@ -71,18 +57,87 @@ class Player {
 
     this.x += this.acceleration.x;
     this.y += this.acceleration.y;
+    this.acceleration.x =
+      this.acceleration.x - 0.02 < -2 ? -2 : this.acceleration.x - 0.05;
+
+    this.shoots.forEach((shot) => {
+      shot.update();
+      if (!shot.isVisible()) {
+        this.shoots.splice(this.shoots.indexOf(shot), 1);
+      }
+    });
   }
 
   handleMovimentation(data) {
     const mapMoves = {
-      up: "up",
-      down: "down",
-      left: "left",
-      right: "right",
+      up: {
+        x: this.acceleration.x,
+        y:
+          -acceleration + this.acceleration.y < -maxAccelerationY
+            ? -maxAccelerationY
+            : -acceleration + this.acceleration.y,
+      },
+      down: {
+        x: this.acceleration.x,
+        y:
+          acceleration + this.acceleration.y > maxAccelerationY
+            ? maxAccelerationY
+            : acceleration + this.acceleration.y,
+      },
+      right: {
+        x:
+          acceleration + this.acceleration.x > maxAccelerationX
+            ? maxAccelerationX
+            : acceleration + this.acceleration.x,
+        y: this.acceleration.y,
+      },
+      upLeft: {
+        x: this.acceleration.x,
+        y:
+          -acceleration + this.acceleration.y < -maxAccelerationY
+            ? -maxAccelerationY
+            : -acceleration + this.acceleration.y,
+      },
+      upRight: {
+        x:
+          acceleration + this.acceleration.x > maxAccelerationX
+            ? maxAccelerationX
+            : acceleration + this.acceleration.x,
+        y:
+          -acceleration + this.acceleration.y < -maxAccelerationY
+            ? -maxAccelerationY
+            : -acceleration + this.acceleration.y,
+      },
+      downLeft: {
+        x: this.acceleration.x,
+        y:
+          acceleration + this.acceleration.y > maxAccelerationY
+            ? maxAccelerationY
+            : acceleration + this.acceleration.y,
+      },
+      downRight: {
+        x:
+          acceleration + this.acceleration.x > maxAccelerationX
+            ? maxAccelerationX
+            : acceleration + this.acceleration.x,
+        y:
+          acceleration + this.acceleration.y > maxAccelerationY
+            ? maxAccelerationY
+            : acceleration + this.acceleration.y,
+      },
     };
+    console.log(data);
     if (mapMoves[data]) {
-      this.direction = mapMoves[data];
+      this.acceleration = mapMoves[data];
+      this.movimentation = data;
+    } else {
+      this.movimentation = "";
     }
+  }
+
+  shoot() {
+    const shot = new Shot(this.x, this.y, 10);
+    this.shoots.push(shot);
   }
 }
 
