@@ -46,6 +46,13 @@ function App() {
           ctx.stroke();
         });
       }
+      if (player.enemy.length > 0) {
+        player.enemy.forEach((enemy) => {
+          ctx.beginPath();
+          ctx.fillRect(enemy.x, enemy.y, 10, 10);
+          ctx.stroke();
+        });
+      }
       if (player.movimentation) {
         ctx.beginPath();
         ctx.strokeStyle = "red";
