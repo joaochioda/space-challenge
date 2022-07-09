@@ -10,6 +10,8 @@ class Enemy {
   }
   spaw() {
     this.x = 800;
+    this.width = 50;
+    this.height = 50;
     if (this.where === "up") {
       this.y = Math.floor(Math.random() * (300 - 0) + 0);
     } else {

@@ -1,5 +1,3 @@
 [Front]
 
 [Server]
-Spawn enemies
-Collision
