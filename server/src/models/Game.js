@@ -15,6 +15,7 @@ class Game {
       this.playerB.move();
       this.sendDataTofront();
       this.moveEnemies();
+      this.checkShootCollision();
     }, 1000 / 60);
   }
   spawnEnemy() {
@@ -32,6 +33,27 @@ class Game {
     });
     this.enemies = this.enemies.filter((enemy) => {
       return !enemy.isVisible();
+    });
+  }
+
+  checkShootCollision() {
+    this.playerA.shoots.forEach((shoot) => {
+      this.enemies.forEach((enemy) => {
+        if (shoot.isCollision(enemy)) {
+          enemy.life -= shoot.damage;
+          this.playerA.shoots.splice(this.playerA.shoots.indexOf(shoot), 1);
+          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        }
+      });
+    });
+    this.playerB.shoots.forEach((shoot) => {
+      this.enemies.forEach((enemy) => {
+        if (shoot.isCollision(enemy)) {
+          enemy.life -= shoot.damage;
+          this.playerB.shoots.splice(this.playerB.shoots.indexOf(shoot), 1);
+          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        }
+      });
     });
   }
 

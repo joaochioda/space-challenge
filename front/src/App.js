@@ -49,7 +49,7 @@ function App() {
       if (player.enemy.length > 0) {
         player.enemy.forEach((enemy) => {
           ctx.beginPath();
-          ctx.fillRect(enemy.x, enemy.y, 10, 10);
+          ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
           ctx.stroke();
         });
       }

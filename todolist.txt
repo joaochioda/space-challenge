@@ -1,5 +1,4 @@
 [Front]
 
 [Server]
-Spawn enemies
-Collision
+Create spin monsters
