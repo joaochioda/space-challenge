@@ -1,3 +1,4 @@
 [Front]
 
 [Server]
+Create spin monsters

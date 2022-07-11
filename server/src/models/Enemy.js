@@ -6,6 +6,7 @@ class Enemy {
     this.velocity = 1;
     this.life = 10;
     this.where = where;
+    this.angle = 0;
     this.spaw();
   }
   spaw() {
@@ -19,12 +20,17 @@ class Enemy {
     }
 
     if (this.difficulty === "easy") {
-      this.velocity = 1;
+      this.velocity = 3;
       this.life = 10;
     }
   }
   update() {
     this.x -= this.velocity;
+    this.x = Math.floor(this.x);
+    this.rotate();
+  }
+  rotate() {
+    this.angle += 1;
   }
   isVisible() {
     return this.x < -10;
