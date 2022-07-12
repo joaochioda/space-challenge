@@ -20,8 +20,11 @@ class Game {
   }
   spawnEnemy() {
     setInterval(() => {
-      const enemy1 = new Enemy("easy", "up");
-      const enemy2 = new Enemy("easy", "down");
+      //random number between 0 and 1
+      const random = Math.random();
+      const spin = random > 0.5;
+      const enemy1 = new Enemy("easy", "up", spin);
+      const enemy2 = new Enemy("easy", "down", spin);
       this.enemies.push(enemy1);
       this.enemies.push(enemy2);
     }, 3000);

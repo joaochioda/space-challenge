@@ -1,7 +1,8 @@
 class Enemy {
-  constructor(difficulty, where) {
+  constructor(difficulty, where, spin) {
     this.x = 800;
     this.y = 0;
+    this.spin = spin;
     this.difficulty = difficulty;
     this.velocity = 1;
     this.life = 10;
@@ -27,7 +28,9 @@ class Enemy {
   update() {
     this.x -= this.velocity;
     this.x = Math.floor(this.x);
-    this.rotate();
+    if (this.spin) {
+      this.rotate();
+    }
   }
   rotate() {
     this.angle += 1;
