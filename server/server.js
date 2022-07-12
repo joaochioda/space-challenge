@@ -34,6 +34,7 @@ io.on("connection", (socket) => {
     console.log("------test------");
   });
   socket.on("disconnect", () => {
+    console.log("user disconnected");
     players.splice(players.indexOf(socket), 1);
   });
 });

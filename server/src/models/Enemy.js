@@ -1,6 +1,5 @@
 class Enemy {
   constructor(difficulty, where) {
-    this.x = 800;
     this.y = 0;
     this.difficulty = difficulty;
     this.velocity = 1;
@@ -10,11 +9,11 @@ class Enemy {
     this.spaw();
   }
   spaw() {
-    this.x = 800;
+    this.x = 300;
     this.width = 50;
     this.height = 50;
     if (this.where === "up") {
-      this.y = Math.floor(Math.random() * (300 - 0) + 0);
+      this.y = 5;
     } else {
       this.y = Math.floor(Math.random() * (600 - 300) + 300);
     }
@@ -25,12 +24,12 @@ class Enemy {
     }
   }
   update() {
-    this.x -= this.velocity;
-    this.x = Math.floor(this.x);
+    // this.x -= this.velocity;
+    // this.x = Math.floor(this.x);
     this.rotate();
   }
   rotate() {
-    this.angle += 1;
+    this.angle = 30;
   }
   isVisible() {
     return this.x < -10;

@@ -19,12 +19,12 @@ class Game {
     }, 1000 / 60);
   }
   spawnEnemy() {
-    setInterval(() => {
-      const enemy1 = new Enemy("easy", "up");
-      const enemy2 = new Enemy("easy", "down");
-      this.enemies.push(enemy1);
-      this.enemies.push(enemy2);
-    }, 3000);
+    // setInterval(() => {
+    const enemy1 = new Enemy("easy", "up");
+    const enemy2 = new Enemy("easy", "down");
+    this.enemies.push(enemy1);
+    this.enemies.push(enemy2);
+    // }, 3000);
   }
 
   moveEnemies() {

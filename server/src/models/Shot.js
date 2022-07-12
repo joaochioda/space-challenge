@@ -10,12 +10,13 @@ class Shot {
   isVisible() {
     return this.x > 0 && this.x < 800;
   }
-  isCollision(enemy) {
+
+  isCollision(rect) {
     return (
-      this.x >= enemy.x &&
-      this.x <= enemy.x + enemy.width &&
-      this.y >= enemy.y &&
-      this.y <= enemy.y + enemy.height
+      this.x > rect.x &&
+      this.x < rect.x + rect.width &&
+      this.y > rect.y &&
+      this.y < rect.y + rect.height
     );
   }
 }

@@ -135,7 +135,7 @@ class Player {
   }
 
   shoot() {
-    const shot = new Shot(this.x, this.y, 10);
+    const shot = new Shot(this.x, this.y, 15);
     this.shoots.push(shot);
   }
 }
