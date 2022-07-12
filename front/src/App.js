@@ -48,8 +48,24 @@ function App() {
       }
       if (player.enemy.length > 0) {
         player.enemy.forEach((enemy) => {
-          ctx.beginPath();
-          ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+          ctx.save();
+          ctx.translate(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+          ctx.rotate((enemy.angle * Math.PI) / 180);
+          ctx.translate(-enemy.x, -enemy.y);
+
+          ctx.fillRect(
+            enemy.x - enemy.width / 2,
+            enemy.y - enemy.height / 2,
+            enemy.width,
+            enemy.height
+          );
+          ctx.restore();
+          // ctx.stroke();
+
+          // ctx.beginPath();
+          // ctx.strokeStyle = "red";
+          // ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+
           ctx.stroke();
         });
       }
