@@ -1,6 +1,4 @@
 [Front]
 
 [Server]
-Create triple circle spin
-(rotate around the main circle)
-and colliders
+colliders

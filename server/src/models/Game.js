@@ -1,6 +1,17 @@
 const Player = require("./Player");
 const Enemy = require("./Enemy");
 
+const typesEnemy = (int) => {
+  switch (int) {
+    case 0:
+      return "square";
+    case 1:
+      return "circles";
+    case 2:
+      return "triangle";
+  }
+};
+
 class Game {
   constructor(players) {
     this.playerA = new Player(players[0], "a");
@@ -20,12 +31,13 @@ class Game {
   }
   spawnEnemy() {
     setInterval(() => {
-      //random number between 0 and 1
-      const random = Math.random();
-      const spin = random > 0.5;
-      const enemy1 = new Enemy("easy", "up", spin);
-      const enemy2 = new Enemy("easy", "down", spin);
+      const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
+      const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+
+      const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
       this.enemies.push(enemy1);
+
+      const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
       this.enemies.push(enemy2);
     }, 3000);
   }

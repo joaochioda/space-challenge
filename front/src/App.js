@@ -48,24 +48,46 @@ function App() {
       }
       if (player.enemy.length > 0) {
         player.enemy.forEach((enemy) => {
-          ctx.save();
-          ctx.translate(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
-          ctx.rotate((enemy.angle * Math.PI) / 180);
-          ctx.translate(-enemy.x, -enemy.y);
+          if (enemy.type === "square") {
+            ctx.save();
+            ctx.translate(
+              enemy.x + enemy.width / 2,
+              enemy.y + enemy.height / 2
+            );
+            ctx.rotate((enemy.angle * Math.PI) / 180);
+            ctx.translate(-enemy.x, -enemy.y);
+            ctx.fillRect(
+              enemy.x - enemy.width / 2,
+              enemy.y - enemy.height / 2,
+              enemy.width,
+              enemy.height
+            );
+            ctx.restore();
+          } else if (enemy.type === "circles") {
+            for (let i = 0; i < 2; i++) {
+              let angle = i === 0 ? enemy.angle : enemy.angle + 180;
+              ctx.beginPath();
+              ctx.strokeStyle = "red";
+              ctx.fillStyle = "red";
 
-          ctx.fillRect(
-            enemy.x - enemy.width / 2,
-            enemy.y - enemy.height / 2,
-            enemy.width,
-            enemy.height
-          );
-          ctx.restore();
-          // ctx.stroke();
+              ctx.save();
+              ctx.translate(enemy.x, enemy.y);
+              ctx.rotate((angle * Math.PI) / 180);
+              ctx.arc(35, 35, enemy.width / 2, 0, 2 * Math.PI);
+              ctx.fill();
 
-          // ctx.beginPath();
-          // ctx.strokeStyle = "red";
-          // ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+              ctx.restore();
+              ctx.stroke();
+            }
 
+            ctx.beginPath();
+            ctx.strokeStyle = "blue";
+            ctx.fillStyle = "blue";
+
+            ctx.arc(enemy.x, enemy.y, enemy.width / 2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+          }
           ctx.stroke();
         });
       }

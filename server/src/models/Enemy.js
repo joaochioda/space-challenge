@@ -1,7 +1,8 @@
 class Enemy {
-  constructor(difficulty, where, spin) {
+  constructor(difficulty, where, spin, type) {
     this.x = 800;
     this.y = 0;
+    this.type = type;
     this.spin = spin;
     this.difficulty = difficulty;
     this.velocity = 1;
@@ -14,10 +15,15 @@ class Enemy {
     this.x = 800;
     this.width = 50;
     this.height = 50;
+
     if (this.where === "up") {
       this.y = Math.floor(Math.random() * (300 - 0) + 0);
     } else {
       this.y = Math.floor(Math.random() * (600 - 300) + 300);
+    }
+
+    if (this.type === "circles") {
+      this.spin = true;
     }
 
     if (this.difficulty === "easy") {
