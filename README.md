@@ -18,3 +18,6 @@ Infra - aws (ec2)
 
 ## Initial ideia
 ![space-challenge](https://user-images.githubusercontent.com/47106171/177225257-ce5b477c-06a7-4bb8-8c52-3aa437000605.png)
+
+## Update 16/07
+![update1607](https://user-images.githubusercontent.com/47106171/179361796-3ed3f9d5-b3ac-461e-a68c-5809553f977f.gif)
