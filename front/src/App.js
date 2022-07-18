@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Button from "./components/button";
 import Canvas from "./components/Canvas";
+import { Box } from "detect-collisions";
 
 const keyMap = {
   w: "up",
@@ -38,6 +39,7 @@ function App() {
 
   const draw = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
     data.forEach((player) => {
       if (player.shoots.length > 0) {
         player.shoots.forEach((shoot) => {
@@ -48,46 +50,21 @@ function App() {
       }
       if (player.enemy.length > 0) {
         player.enemy.forEach((enemy) => {
-          if (enemy.type === "square") {
-            ctx.save();
-            ctx.translate(
-              enemy.x + enemy.width / 2,
-              enemy.y + enemy.height / 2
-            );
-            ctx.rotate((enemy.angle * Math.PI) / 180);
-            ctx.translate(-enemy.x, -enemy.y);
-            ctx.fillRect(
-              enemy.x - enemy.width / 2,
-              enemy.y - enemy.height / 2,
-              enemy.width,
-              enemy.height
-            );
-            ctx.restore();
-          } else if (enemy.type === "circles") {
-            for (let i = 0; i < 2; i++) {
-              let angle = i === 0 ? enemy.angle : enemy.angle + 180;
-              ctx.beginPath();
-              ctx.strokeStyle = "red";
-              ctx.fillStyle = "red";
-
-              ctx.save();
-              ctx.translate(enemy.x, enemy.y);
-              ctx.rotate((angle * Math.PI) / 180);
-              ctx.arc(35, 35, enemy.width / 2, 0, 2 * Math.PI);
-              ctx.fill();
-
-              ctx.restore();
-              ctx.stroke();
-            }
-
-            ctx.beginPath();
-            ctx.strokeStyle = "blue";
-            ctx.fillStyle = "blue";
-
-            ctx.arc(enemy.x, enemy.y, enemy.width / 2, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.stroke();
-          }
+          const box = new Box(
+            { x: enemy.x, y: enemy.y },
+            enemy.width,
+            enemy.height
+          );
+          const box1 = new Box(
+            { x: enemy.x, y: enemy.y },
+            enemy.width,
+            enemy.height
+          );
+          let angle = (enemy.angle * 3.14) / 180;
+          box.translate(-enemy.width / 2, -enemy.height / 2);
+          box.setAngle(angle);
+          box.draw(ctx);
+          box1.draw(ctx);
           ctx.stroke();
         });
       }
