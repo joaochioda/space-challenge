@@ -1,5 +1,6 @@
 const Player = require("./Player");
 const Enemy = require("./Enemy");
+const { System } = require("detect-collisions");
 
 const typesEnemy = (int) => {
   switch (int) {
@@ -17,6 +18,7 @@ class Game {
     this.playerA = new Player(players[0], "a");
     this.playerB = new Player(players[1], "b");
     this.enemies = [];
+    this.system = new System();
     this.startGame();
     this.spawnEnemy();
   }
@@ -31,14 +33,16 @@ class Game {
   }
   spawnEnemy() {
     setInterval(() => {
-      const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
-      const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+      // const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
+      // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-      const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
+      // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
+      // this.enemies.push(enemy1);
+
+      // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
+      // this.enemies.push(enemy2);
+      const enemy1 = new Enemy("easy", "up", true, "squares");
       this.enemies.push(enemy1);
-
-      const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
-      this.enemies.push(enemy2);
     }, 3000);
   }
 

@@ -1,3 +1,5 @@
+const { Circle, Polygon, Box } = require("detect-collisions");
+
 class Enemy {
   constructor(difficulty, where, spin, type) {
     this.x = 800;
