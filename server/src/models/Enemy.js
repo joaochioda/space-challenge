@@ -44,7 +44,8 @@ class Enemy {
     }
   }
   rotate() {
-    this.angle += 1;
+    this.angle += 0.5;
+    this.Shape.setAngle(this.angle);
   }
   isVisible() {
     return this.x < -10;

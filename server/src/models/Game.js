@@ -32,18 +32,18 @@ class Game {
     }, 1000 / 60);
   }
   spawnEnemy() {
-    // setInterval(() => {
-    // const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
-    // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+    setInterval(() => {
+      const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
+      // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-    // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
-    // this.enemies.push(enemy1);
+      // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
+      // this.enemies.push(enemy1);
 
-    // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
-    // this.enemies.push(enemy2);
-    const enemy1 = new Enemy("easy", "up", false, "square");
-    this.enemies.push(enemy1);
-    // }, 3000);
+      // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
+      // this.enemies.push(enemy2);
+      const enemy1 = new Enemy("easy", "up", spin, "square");
+      this.enemies.push(enemy1);
+    }, 3000);
   }
 
   moveEnemies() {
@@ -59,14 +59,14 @@ class Game {
   checkShootCollision() {
     this.enemies.forEach((enemy) => {
       if (this.system.checkCollision(this.playerA.Shape, enemy.Shape)) {
-        const response = this.system.response;
-        console.log("hit");
+        // const response = this.system.response;
+        // console.log(response);
       }
     });
 
     this.playerA.shoots.forEach((shoot) => {
       this.enemies.forEach((enemy) => {
-        if (shoot.isCollision(enemy)) {
+        if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
           enemy.life -= shoot.damage;
           this.playerA.shoots.splice(this.playerA.shoots.indexOf(shoot), 1);
           this.enemies.splice(this.enemies.indexOf(enemy), 1);
@@ -75,7 +75,7 @@ class Game {
     });
     this.playerB.shoots.forEach((shoot) => {
       this.enemies.forEach((enemy) => {
-        if (shoot.isCollision(enemy)) {
+        if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
           enemy.life -= shoot.damage;
           this.playerB.shoots.splice(this.playerB.shoots.indexOf(shoot), 1);
           this.enemies.splice(this.enemies.indexOf(enemy), 1);
