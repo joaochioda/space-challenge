@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Button from "./components/button";
 import Canvas from "./components/Canvas";
-import { Box } from "detect-collisions";
 
 const keyMap = {
   w: "up",
@@ -50,21 +49,26 @@ function App() {
       }
       if (player.enemy.length > 0) {
         player.enemy.forEach((enemy) => {
-          const box = new Box(
-            { x: enemy.x, y: enemy.y },
+          // ctx.beginPath();
+          ctx.beginPath();
+
+          let angle = (enemy.angle * Math.PI) / 180;
+          // box.translate(-enemy.width / 2, -enemy.height / 2);
+          // box.setAngle(angle);
+          // box.draw(ctx);
+
+          ctx.save();
+          ctx.translate(enemy.x, enemy.y);
+          ctx.rotate(angle);
+          ctx.translate(-enemy.x, -enemy.y);
+
+          ctx.fillRect(
+            enemy.x - enemy.width / 2,
+            enemy.y - enemy.height / 2,
             enemy.width,
             enemy.height
           );
-          const box1 = new Box(
-            { x: enemy.x, y: enemy.y },
-            enemy.width,
-            enemy.height
-          );
-          let angle = (enemy.angle * 3.14) / 180;
-          box.translate(-enemy.width / 2, -enemy.height / 2);
-          box.setAngle(angle);
-          box.draw(ctx);
-          box1.draw(ctx);
+          ctx.restore();
           ctx.stroke();
         });
       }
