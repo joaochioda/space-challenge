@@ -1,3 +1,5 @@
+const { Circle, Polygon, Box } = require("detect-collisions");
+
 class Enemy {
   constructor(difficulty, where, spin, type) {
     this.x = 800;
@@ -30,16 +32,20 @@ class Enemy {
       this.velocity = 3;
       this.life = 10;
     }
+    this.velocity = 3;
+    this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
   }
   update() {
     this.x -= this.velocity;
     this.x = Math.floor(this.x);
+    this.Shape.setPosition(this.x, this.y);
     if (this.spin) {
       this.rotate();
     }
   }
   rotate() {
-    this.angle += 1;
+    this.angle += 0.5;
+    this.Shape.setAngle(this.angle);
   }
   isVisible() {
     return this.x < -10;
