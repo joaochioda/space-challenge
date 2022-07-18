@@ -54,6 +54,7 @@ class Game {
       this.system.remove(enemy.Shape);
       return !enemy.isVisible();
     });
+    this.system.update();
   }
 
   checkShootCollision() {

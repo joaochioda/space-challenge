@@ -34,6 +34,7 @@ class Enemy {
     }
     this.velocity = 3;
     this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
+    this.Shape.translate(-this.width / 2, -this.height / 2);
   }
   update() {
     this.x -= this.velocity;
@@ -45,7 +46,8 @@ class Enemy {
   }
   rotate() {
     this.angle += 0.5;
-    this.Shape.setAngle(this.angle);
+    let angle = (this.angle * 3.14) / 180;
+    this.Shape.rotate(angle);
   }
   isVisible() {
     return this.x < -10;
