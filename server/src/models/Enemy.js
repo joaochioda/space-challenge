@@ -32,10 +32,13 @@ class Enemy {
       this.velocity = 3;
       this.life = 10;
     }
+    this.velocity = 3;
+    this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
   }
   update() {
     this.x -= this.velocity;
     this.x = Math.floor(this.x);
+    this.Shape.setPosition(this.x, this.y);
     if (this.spin) {
       this.rotate();
     }

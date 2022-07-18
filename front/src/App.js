@@ -126,11 +126,11 @@ function App() {
       ctx.beginPath();
       if (player.id === socket.id) {
         ctx.strokeStyle = "blue";
-        ctx.rect(player.x, player.y, 10, 10);
+        ctx.rect(player.x, player.y, player.width, player.height);
         ctx.stroke();
       } else {
         ctx.strokeStyle = "red";
-        ctx.rect(player.x, player.y, 10, 10);
+        ctx.rect(player.x, player.y, player.width, player.height);
         ctx.stroke();
       }
     });

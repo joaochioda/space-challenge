@@ -1,3 +1,5 @@
+const { Circle, Polygon, Box } = require("detect-collisions");
+
 const Shot = require("./Shot");
 
 const maxAccelerationX = 3;
@@ -21,6 +23,8 @@ class Player {
     this.limit_y_end = player === "a" ? maxYScreen : maxYScreen * 2;
     this.x = 0;
     this.y = player === "a" ? 0 : maxYScreen;
+    this.width = 10;
+    this.height = 10;
     this.direction = null;
     this.movimentation = ""; //1 = up, -1 = down
     this.acceleration = {
@@ -28,6 +32,7 @@ class Player {
       y: 0,
     };
     this.shoots = [];
+    this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
 
     this.socket.on("move", (data) => {
       this.handleMovimentation(data);
@@ -57,6 +62,7 @@ class Player {
 
     this.x += this.acceleration.x;
     this.y += this.acceleration.y;
+    this.Shape.setPosition(this.x, this.y);
     this.acceleration.x =
       this.acceleration.x - 0.02 < -2 ? -2 : this.acceleration.x - 0.05;
 

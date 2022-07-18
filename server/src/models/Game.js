@@ -32,18 +32,18 @@ class Game {
     }, 1000 / 60);
   }
   spawnEnemy() {
-    setInterval(() => {
-      // const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
-      // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+    // setInterval(() => {
+    // const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
+    // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-      // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
-      // this.enemies.push(enemy1);
+    // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
+    // this.enemies.push(enemy1);
 
-      // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
-      // this.enemies.push(enemy2);
-      const enemy1 = new Enemy("easy", "up", true, "squares");
-      this.enemies.push(enemy1);
-    }, 3000);
+    // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
+    // this.enemies.push(enemy2);
+    const enemy1 = new Enemy("easy", "up", false, "square");
+    this.enemies.push(enemy1);
+    // }, 3000);
   }
 
   moveEnemies() {
@@ -51,11 +51,19 @@ class Game {
       enemy.update();
     });
     this.enemies = this.enemies.filter((enemy) => {
+      this.system.remove(enemy.Shape);
       return !enemy.isVisible();
     });
   }
 
   checkShootCollision() {
+    this.enemies.forEach((enemy) => {
+      if (this.system.checkCollision(this.playerA.Shape, enemy.Shape)) {
+        const response = this.system.response;
+        console.log("hit");
+      }
+    });
+
     this.playerA.shoots.forEach((shoot) => {
       this.enemies.forEach((enemy) => {
         if (shoot.isCollision(enemy)) {
@@ -81,6 +89,8 @@ class Game {
       {
         x: this.playerA.x,
         y: this.playerA.y,
+        width: this.playerA.width,
+        height: this.playerA.height,
         id: this.playerA.id,
         shoots: this.playerA.shoots,
         movimentation: this.playerA.movimentation,
@@ -89,6 +99,8 @@ class Game {
       {
         x: this.playerB.x,
         y: this.playerB.y,
+        width: this.playerA.width,
+        height: this.playerA.height,
         id: this.playerB.id,
         shoots: this.playerB.shoots,
         movimentation: this.playerB.movimentation,
