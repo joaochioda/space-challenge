@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-import Button from "./components/button";
-import Canvas from "./components/Canvas";
-
+import Button from "../components/button";
+import Canvas from "../components/Canvas";
+import newSocket from "../Socket";
 const keyMap = {
   w: "up",
   a: "left",
@@ -12,15 +11,11 @@ const keyMap = {
 
 const keyPressed = [];
 
-function App() {
-  const [socket, setSocket] = useState(null);
+function Game() {
   const [ping, setPing] = useState(0);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    //const newSocket = io(`meu-ip:3333`); connect through internet
-    const newSocket = io(`localhost:3333`);
-    setSocket(newSocket);
     sendMove(newSocket);
     setInterval(() => {
       const start = Date.now();
@@ -33,8 +28,8 @@ function App() {
     newSocket.on("gameData", (data) => {
       setData(data);
     });
-    return () => newSocket.close();
-  }, [setSocket]);
+    // return () => newSocket.close();
+  }, []);
 
   const draw = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -105,7 +100,7 @@ function App() {
         ctx.stroke();
       }
       ctx.beginPath();
-      if (player.id === socket.id) {
+      if (player.id === newSocket.id) {
         ctx.strokeStyle = "blue";
         ctx.rect(player.x, player.y, player.width, player.height);
         ctx.stroke();
@@ -163,7 +158,7 @@ function App() {
 
   const handleKeyUpCustom = (e) => {
     if (e.code === "Space") {
-      socket.emit("shoot");
+      newSocket.emit("shoot");
     } else {
       const key = keyMap[e.key];
       if (key) {
@@ -172,14 +167,12 @@ function App() {
           keyPressed.splice(index, 1);
         }
       }
-      socket.emit("move", null);
+      newSocket.emit("move", null);
     }
   };
 
   return (
     <div>
-      <header>React Chat</header>
-      <Button socket={socket} />
       <p>{ping}ms</p>
       <Canvas
         draw={draw}
@@ -190,4 +183,4 @@ function App() {
   );
 }
 
-export default App;
+export default Game;
