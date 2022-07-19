@@ -1,4 +1,10 @@
-[Front]
-
-[Server]
-colliders
+*Features*
+Room system (create room,join)- Doing
+Game state
+Player damage
+Power itens (think of functionalities)
+Max hits on screen
+Boss
+Weapons
+Status
+Level
