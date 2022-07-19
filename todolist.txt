@@ -1,5 +1,5 @@
 *Features*
-Room system (create room,join)- Doing
+Handle Player disconnect (finish game and room)
 Game state
 Player damage
 Power itens (think of functionalities)

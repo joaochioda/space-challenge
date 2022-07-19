@@ -14,16 +14,17 @@ const typesEnemy = (int) => {
 };
 
 class Game {
-  constructor(players) {
+  constructor(players, roomId) {
     this.playerA = new Player(players[0], "a");
     this.playerB = new Player(players[1], "b");
     this.enemies = [];
     this.system = new System();
     this.startGame();
     this.spawnEnemy();
+    this.roomId = roomId;
   }
   startGame() {
-    setInterval(() => {
+    this.startGameInterval = setInterval(() => {
       this.playerA.move();
       this.playerB.move();
       this.sendDataTofront();
@@ -32,7 +33,7 @@ class Game {
     }, 1000 / 60);
   }
   spawnEnemy() {
-    setInterval(() => {
+    this.spawnEnemyInterval = setInterval(() => {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
       // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
@@ -110,6 +111,12 @@ class Game {
     ];
     this.playerA.socket.emit("gameData", data);
     this.playerB.socket.emit("gameData", data);
+  }
+  destroy() {
+    this.playerA.socket.disconnect();
+    this.playerB.socket.disconnect();
+    clearInterval(this.startGameInterval);
+    clearInterval(this.spawnEnemyInterval);
   }
 }
 
