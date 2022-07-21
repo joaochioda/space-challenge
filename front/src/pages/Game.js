@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Button from "../components/button";
 import Canvas from "../components/Canvas";
 import socket from "../Socket";
 import newSocket from "../Socket";

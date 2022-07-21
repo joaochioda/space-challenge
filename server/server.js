@@ -64,6 +64,14 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
     players.splice(players.indexOf(socket), 1);
     const myRoomId = rooms.find((room) => room.players.includes(socket.id));
+    if (!myRoomId) return;
+    const room = rooms.find((room) => room.id === myRoomId.id);
+    if (room) {
+      room.players.splice(room.players.indexOf(socket.id), 1);
+      if (room.players.length === 0) {
+        rooms.splice(rooms.indexOf(room), 1);
+      }
+    }
     let game = games.find((g) => g.roomId === myRoomId.id);
     if (game) {
       game.destroy();
