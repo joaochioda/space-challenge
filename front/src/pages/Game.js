@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../components/button";
 import Canvas from "../components/Canvas";
+import socket from "../Socket";
 import newSocket from "../Socket";
 const keyMap = {
   w: "up",
@@ -174,6 +175,7 @@ function Game() {
   return (
     <div>
       <p>{ping}ms</p>
+      {data && <div> Life: {data.find((d) => d.id === socket.id)?.life}</div>}
       <Canvas
         draw={draw}
         handleKeyDownCustom={handleKeyDownCustom}

@@ -31,6 +31,7 @@ class Enemy {
     if (this.difficulty === "easy") {
       this.velocity = 3;
       this.life = 10;
+      this.damage = 10;
     }
     this.velocity = 3;
     this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);

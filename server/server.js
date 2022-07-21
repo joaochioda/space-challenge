@@ -69,10 +69,6 @@ io.on("connection", (socket) => {
       game.destroy();
     }
   });
-
-  socket.on("sayHi", () => {
-    console.log("oi");
-  });
 });
 
 server.listen(3333, () => {

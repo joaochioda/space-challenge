@@ -29,21 +29,18 @@ class Game {
       this.playerB.move();
       this.sendDataTofront();
       this.moveEnemies();
-      this.checkShootCollision();
+      this.checkEnemyCollision();
     }, 1000 / 60);
   }
   spawnEnemy() {
     this.spawnEnemyInterval = setInterval(() => {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
-      // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+      const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-      // const enemy1 = new Enemy("easy", "up", spin, typesEnemy(randomEnemy));
-      // this.enemies.push(enemy1);
-
-      // const enemy2 = new Enemy("easy", "down", spin, typesEnemy(randomEnemy));
-      // this.enemies.push(enemy2);
       const enemy1 = new Enemy("easy", "up", spin, "square");
       this.enemies.push(enemy1);
+      const enemy2 = new Enemy("easy", "down", spin, "square");
+      this.enemies.push(enemy2);
     }, 3000);
   }
 
@@ -58,11 +55,15 @@ class Game {
     this.system.update();
   }
 
-  checkShootCollision() {
+  checkEnemyCollision() {
     this.enemies.forEach((enemy) => {
       if (this.system.checkCollision(this.playerA.Shape, enemy.Shape)) {
-        // const response = this.system.response;
-        // console.log(response);
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        this.playerA.takeDamage(enemy.damage);
+      }
+      if (this.system.checkCollision(this.playerB.Shape, enemy.Shape)) {
+        this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        this.playerB.takeDamage(enemy.damage);
       }
     });
 
@@ -91,6 +92,7 @@ class Game {
       {
         x: this.playerA.x,
         y: this.playerA.y,
+        life: this.playerA.life,
         width: this.playerA.width,
         height: this.playerA.height,
         id: this.playerA.id,
@@ -101,8 +103,9 @@ class Game {
       {
         x: this.playerB.x,
         y: this.playerB.y,
-        width: this.playerA.width,
-        height: this.playerA.height,
+        width: this.playerB.width,
+        life: this.playerB.life,
+        height: this.playerB.height,
         id: this.playerB.id,
         shoots: this.playerB.shoots,
         movimentation: this.playerB.movimentation,

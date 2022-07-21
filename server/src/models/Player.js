@@ -144,6 +144,14 @@ class Player {
     const shot = new Shot(this.x, this.y, 10);
     this.shoots.push(shot);
   }
+
+  takeDamage(damage) {
+    this.life -= damage;
+    // console.log(this.life);
+    if (this.life <= 0) {
+      this.isAlive = false;
+    }
+  }
 }
 
 module.exports = Player;

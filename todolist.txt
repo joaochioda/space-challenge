@@ -1,9 +1,7 @@
 *Features*
-Handle Player disconnect (finish game and room)
 Game state
-Player damage
-Power itens (think of functionalities)
 Max hits on screen
+Power itens (think of functionalities)
 Boss
 Weapons
 Status
