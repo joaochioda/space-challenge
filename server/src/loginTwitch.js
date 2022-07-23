@@ -7,9 +7,9 @@ var request = require("request");
 const cors = require("cors");
 
 // Define our constants, you will change these with your own
-const TWITCH_CLIENT_ID = "tnhoxgx60xwhpbu9znlzcuwico07jy";
-const TWITCH_SECRET = "j5yl9s08of4655wcraebyqq11tqsxu";
-const SESSION_SECRET = "bas#0kdsa445(itosae12";
+const TWITCH_CLIENT_ID = "fuck";
+const TWITCH_SECRET = "fuck";
+const SESSION_SECRET = "fuck";
 const CALLBACK_URL = "http://localhost:3333/auth/twitch/callback"; // You can run locally with - http://localhost:3000/auth/twitch/callback
 
 // Initialize Express and middlewares
