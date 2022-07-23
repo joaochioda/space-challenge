@@ -1,4 +1,5 @@
 *Features*
+Login twitch
 Game state
 Max hits on screen
 Power itens (think of functionalities)
