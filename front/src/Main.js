@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import { UserContext } from "./context/UserContext";
 import Game from "./pages/Game";
 import Room from "./pages/Room";
 import socket from "./Socket";
-import axios from "axios";
 
 export const Main = () => {
-  axios.get("http://localhost:3333").then(console.log);
-  // const [selectedRoom, setSelectedRoom] = useState(null);
-  // useEffect(() => {
-  //   socket.on("joinedRoom", (data) => {
-  //     setSelectedRoom(data);
-  //   });
-  //   socket.on("playerEntered", (data) => {
-  //     console.log("entrou player");
-  //   });
-  // }, []);
-  // return <div>{selectedRoom ? <Game /> : <Room />}</div>;
-  return <div> dsada </div>;
+  const { user } = useContext(UserContext);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  useEffect(() => {
+    socket.on("joinedRoom", (data) => {
+      setSelectedRoom(data);
+    });
+    socket.on("playerEntered", (data) => {
+      console.log("entrou player");
+    });
+  }, []);
+  return (
+    <div>
+      <div>
+        {user && <span>{user.name}</span>}
+        {user && <img src={user.image} alt="user" width={25} height={25} />}
+      </div>
+      <div>{selectedRoom ? <Game /> : <Room />}</div>
+    </div>
+  );
 };
 
 export default Main;

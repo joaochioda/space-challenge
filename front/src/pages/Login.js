@@ -1,14 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import Main from "../Main";
 
 const Login = () => {
-  const { loginTwitch } = useContext(UserContext);
-  loginTwitch();
-  return (
-    <div>
-      <h1>Login</h1>
-    </div>
-  );
+  const { user } = useContext(UserContext);
+
+  return <div>{user ? <Main /> : <div>Loading...</div>}</div>;
 };
 
 export default Login;

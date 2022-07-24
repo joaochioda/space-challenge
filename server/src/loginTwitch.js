@@ -5,6 +5,8 @@ var passport = require("passport");
 var OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 var request = require("request");
 const cors = require("cors");
+var jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 
 // Define our constants, you will change these with your own
@@ -114,24 +116,50 @@ module.exports = function loginTwitch(app) {
         if (err) {
           return next(err);
         }
-        // Redirect if it succeeds
-        console.log(user);
-        console.log(info);
-
-        return res.redirect(
-          `http://localhost:3000/logged?email=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`
+        var token = jwt.sign(
+          {
+            id: user.data[0].id,
+            email: user.data[0].email,
+            image: user.data[0].profile_image_url,
+            name: user.data[0].display_name,
+            accessToken: user.accessToken,
+          },
+          SESSION_SECRET,
+          {
+            expiresIn: "24h",
+            algorithm: "HS256",
+          }
         );
+        // Redirect if it succeeds
+        return res.redirect(`http://localhost:3000/logged?bearer=${token}`);
       });
     })(req, res, next);
   });
 
   // If user has an authenticated session, display it, otherwise display link to authenticate
   app.get("/", function (req, res) {
-    console.log(req.session);
     if (req.session && req.session.passport && req.session.passport.user) {
       res.send("Logado");
     } else {
       res.send("Need login");
+    }
+  });
+
+  app.get("/me", (req, res) => {
+    try {
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.split(" ")[0] === "Bearer"
+      ) {
+        const token = req.headers.authorization.split(" ")[1];
+        var decoded = jwt.verify(token, SESSION_SECRET);
+        if (decoded) {
+          //verify backend if access token is valid
+          res.send({ name: decoded.name, image: decoded.image });
+        }
+      }
+    } catch (err) {
+      res.status(401).send("Unauthorized");
     }
   });
 };
