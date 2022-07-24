@@ -1,11 +1,22 @@
 import React from "react";
 
 import ReactDOM from "react-dom/client";
-import Main from "./Main";
+import UserProvider from "./context/UserContext";
+import Login from "./pages/Login";
+import Logged from "./pages/Logged";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Main />
-  </React.StrictMode>
+  <UserProvider>
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/logged" element={<Logged />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  </UserProvider>
 );

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import { UserContext } from "./context/UserContext";
 import Game from "./pages/Game";
 import Room from "./pages/Room";
 import socket from "./Socket";
 
 export const Main = () => {
+  const { user } = useContext(UserContext);
   const [selectedRoom, setSelectedRoom] = useState(null);
-
   useEffect(() => {
     socket.on("joinedRoom", (data) => {
       setSelectedRoom(data);
@@ -15,8 +16,15 @@ export const Main = () => {
       console.log("entrou player");
     });
   }, []);
-
-  return <div>{selectedRoom ? <Game /> : <Room />}</div>;
+  return (
+    <div>
+      <div>
+        {user && <span>{user.name}</span>}
+        {user && <img src={user.image} alt="user" width={25} height={25} />}
+      </div>
+      <div>{selectedRoom ? <Game /> : <Room />}</div>
+    </div>
+  );
 };
 
 export default Main;
