@@ -6,15 +6,18 @@ var OAuth2Strategy = require("passport-oauth").OAuth2Strategy;
 var request = require("request");
 const cors = require("cors");
 var jwt = require("jsonwebtoken");
+const path = require("path");
 
-require("dotenv").config();
+require("dotenv").config({
+  path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`),
+});
 
 // Define our constants, you will change these with your own
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_SECRET = process.env.TWITCH_SECRET;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const CALLBACK_URL = process.env.CALLBACK_URL; // You can run locally with - http://localhost:3000/auth/twitch/callback
-
+const FRONT_URL = process.env.FRONT_URL; // You can run locally with - http://localhost:3000/
 // Initialize Express and middlewares
 
 module.exports = function loginTwitch(app) {
@@ -110,7 +113,7 @@ module.exports = function loginTwitch(app) {
       }
       // Redirect if it fails
       if (!user) {
-        return res.redirect("/login");
+        return res.redirect(`/login`);
       }
       req.logIn(user, function (err) {
         if (err) {
@@ -131,7 +134,7 @@ module.exports = function loginTwitch(app) {
           }
         );
         // Redirect if it succeeds
-        return res.redirect(`http://localhost:3000/logged?bearer=${token}`);
+        return res.redirect(`${FRONT_URL}/logged?bearer=${token}`);
       });
     })(req, res, next);
   });
