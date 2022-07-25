@@ -29,6 +29,10 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log(error.message);
+    if (error.message === "Network Error") {
+      window.location.href = `/servers-down`;
+    }
     if (error.response && error.response.data) {
       if (error.response.status === 401) {
         deleteStorage();

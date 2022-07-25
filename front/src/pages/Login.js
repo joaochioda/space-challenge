@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext } from "react";
+import React, { useContext, lazy } from "react";
 import { UserContext } from "../context/UserContext";
-import Main from "../Main";
+
+const Main = lazy(() => import("../Main"));
 
 const Login = () => {
   const { user } = useContext(UserContext);
