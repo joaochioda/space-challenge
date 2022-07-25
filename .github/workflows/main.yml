@@ -2,7 +2,7 @@ name: Deploy Front
 on:
   push:
     branches:
-      - main
+      - master
 
 defaults:
   run:
