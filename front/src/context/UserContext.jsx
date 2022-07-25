@@ -6,6 +6,7 @@ export const UserContext = createContext();
 
 export default function UserProvider(props) {
     const [user, setUser] = useState(null);
+    // const [user, setUser] = useState({ name: 'test', image: '' }); //disable login twitch
 
     useEffect(() => {
         getMe();
