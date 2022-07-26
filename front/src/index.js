@@ -17,7 +17,7 @@ root.render(
           <Route path="/logged" element={<Logged />} />
           <Route
             path="/servers-down"
-            element={<div>Sorry we are having problems with our servers</div>}
+            element={<div>Sorry we are having problems with our servers!</div>}
           />
         </Routes>
       </BrowserRouter>
