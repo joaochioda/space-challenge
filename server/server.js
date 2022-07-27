@@ -5,7 +5,6 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const Game = require("./src/models/Game");
 const { v4: uuidv4 } = require("uuid");
-const loginTwitch = require("./src/loginTwitch");
 
 const io = new Server(server, {
   cors: {
@@ -16,6 +15,10 @@ const io = new Server(server, {
 const players = [];
 let games = [];
 const rooms = [];
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 io.on("connection", (socket) => {
   players.push(socket);
