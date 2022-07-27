@@ -21,19 +21,11 @@ const FRONT_URL = process.env.FRONT_URL; // You can run locally with - http://lo
 // Initialize Express and middlewares
 
 module.exports = function loginTwitch(app) {
+  console.log("a");
   app.use(
     session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false })
   );
-  app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "Content-Type",
-      "Authorization"
-    );
-    next();
-  });
+
   app.use(
     cors({
       origin: "*", // allow to server to accept request from different origin
@@ -45,9 +37,12 @@ module.exports = function loginTwitch(app) {
   app.use(express.static("public"));
   app.use(passport.initialize());
   app.use(passport.session());
+  console.log("b");
 
   // Override passport profile function to get user profile from Twitch API
   OAuth2Strategy.prototype.userProfile = function (accessToken, done) {
+    console.log("c");
+
     var options = {
       url: "https://api.twitch.tv/helix/users",
       method: "GET",
@@ -68,10 +63,14 @@ module.exports = function loginTwitch(app) {
   };
 
   passport.serializeUser(function (user, done) {
+    console.log("d");
+
     done(null, user);
   });
 
   passport.deserializeUser(function (user, done) {
+    console.log("e");
+
     done(null, user);
   });
 
@@ -87,6 +86,8 @@ module.exports = function loginTwitch(app) {
         state: true,
       },
       function (accessToken, refreshToken, profile, done) {
+        console.log("f");
+
         profile.accessToken = accessToken;
         profile.refreshToken = refreshToken;
 
@@ -100,14 +101,14 @@ module.exports = function loginTwitch(app) {
   );
 
   // Set route to start OAuth link, this is where you define scopes to request
-  app.get(
-    "/auth/twitch",
-    passport.authenticate("twitch", { scope: "user_read" })
-  );
+  app.get("/auth/twitch");
 
   // Set route for OAuth redirect
   app.get("/auth/twitch/callback", function (req, res, next) {
+    console.log("g");
+
     passport.authenticate("twitch", function (err, user, info) {
+      console.log("h");
       if (err) {
         return next(err);
       }

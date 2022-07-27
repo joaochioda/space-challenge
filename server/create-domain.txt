@@ -5,5 +5,4 @@ aws cloudfront - create distribution point to s3 and add certificate
 aws route 53 - create new record same name of cloudfront and route traffic to alias to cloudfront distribution
 wait and acess the site
 
-https://www.youtube.com/watch?v=SdJA69FVlJY
-https://www.youtube.com/watch?v=FQ3QwvtWiMA
+https://www.youtube.com/watch?v=lPVgfSXTE1Y
