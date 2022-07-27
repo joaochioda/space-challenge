@@ -1,4 +1,4 @@
-service: sample-app
+service: login-twitch
 provider:
   name: aws
   runtime: nodejs16.x
@@ -19,3 +19,4 @@ functions:
           cors: true
 plugins:
   - serverless-offline
+  - serverless-plugin-common-excludes

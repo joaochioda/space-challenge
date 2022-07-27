@@ -13,8 +13,6 @@ const io = new Server(server, {
   },
 });
 
-loginTwitch(app);
-
 const players = [];
 let games = [];
 const rooms = [];
