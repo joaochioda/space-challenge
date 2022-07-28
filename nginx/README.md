@@ -42,3 +42,5 @@ server {
             root   html;
         }
     }
+
+https://localhost/
