@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
       deleteStorage();
-      window.location.href = `${baseUrl}/auth/twitch`;
+      window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
     }
     return response;
   },
@@ -36,7 +36,7 @@ axios.interceptors.response.use(
     if (error.response && error.response.data) {
       if (error.response.status === 401) {
         deleteStorage();
-        window.location.href = `${baseUrl}/auth/twitch`;
+        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
       }
     }
   }

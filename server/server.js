@@ -5,7 +5,9 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const Game = require("./src/models/Game");
 const { v4: uuidv4 } = require("uuid");
-
+var jwt = require("jsonwebtoken");
+const cors = require("cors");
+const { SESSION_SECRET } = require("./keys_twitch");
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -16,8 +18,38 @@ const players = [];
 let games = [];
 const rooms = [];
 
+app.use(
+  cors({
+    origin: "*", // allow to server to accept request from different origin
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // allow session cookie from browser to pass through
+  })
+);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+app.get("/me", (req, res) => {
+  try {
+    // res.send({ name: "John Doe" });
+    if (
+      req?.headers?.authorization &&
+      req?.headers?.authorization?.split(" ")[0] === "Bearer"
+    ) {
+      const token = req.headers.authorization.split(" ")[1];
+      var decoded = jwt.verify(token, SESSION_SECRET);
+      if (decoded) {
+        //verify backend if access token is valid
+        res.send({ name: decoded.name, image: decoded.image });
+      }
+    } else {
+      res.status(401).send("Unauthorized");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(401).send("Unauthorized");
+  }
 });
 
 io.on("connection", (socket) => {
