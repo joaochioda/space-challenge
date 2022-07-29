@@ -24,19 +24,15 @@ axios.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
       deleteStorage();
-      window.location.href = `${baseUrl}/auth/twitch`;
+      window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
     }
     return response;
   },
   (error) => {
-    console.log(error.message);
-    if (error.message === "Network Error") {
-      window.location.href = `/servers-down`;
-    }
     if (error.response && error.response.data) {
       if (error.response.status === 401) {
         deleteStorage();
-        window.location.href = `${baseUrl}/auth/twitch`;
+        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
       }
     }
   }

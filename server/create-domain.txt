@@ -6,3 +6,4 @@ aws route 53 - create new record same name of cloudfront and route traffic to al
 wait and acess the site
 
 https://www.youtube.com/watch?v=lPVgfSXTE1Y
+https://www.youtube.com/watch?v=FQ3QwvtWiMA - api
