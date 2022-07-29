@@ -2,3 +2,4 @@
 package-lock.json
 .env*
 keys_twitch.js
+ec2-sp.pem
