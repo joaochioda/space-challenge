@@ -26,21 +26,5 @@ cd nginx-1.22.0
 
 * ssl
 
-server {
-       listen 443 ssl;
-       server_name  localhost;
-
-        ssl_certificate ../ssl/example.crt;
-        ssl_certificate_key ../ssl/example.key;
-
-        location / {
-            proxy_pass   http://localhost:3333;
-        }
-
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-    }
-
-https://localhost/
+https://189.46.42.93/ - ssl
+http://189.46.42.93:82/ - http

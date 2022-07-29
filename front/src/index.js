@@ -15,10 +15,6 @@ root.render(
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route path="/logged" element={<Logged />} />
-          <Route
-            path="/servers-down"
-            element={<div>Sorry we are having problems with our servers!</div>}
-          />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

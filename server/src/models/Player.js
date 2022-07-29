@@ -35,6 +35,7 @@ class Player {
     this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
 
     this.socket.on("move", (data) => {
+      // only move after period of time
       this.handleMovimentation(data);
     });
     this.socket.on("shoot", (data) => {

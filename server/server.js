@@ -27,7 +27,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World!!");
 });
 
 app.get("/me", (req, res) => {
@@ -47,7 +47,6 @@ app.get("/me", (req, res) => {
       res.status(401).send("Unauthorized");
     }
   } catch (err) {
-    console.log(err);
     res.status(401).send("Unauthorized");
   }
 });

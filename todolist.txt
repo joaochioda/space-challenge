@@ -1,5 +1,6 @@
 *Features*
-Login twitch
+only move after period of time
+
 Game state
 Max hits on screen
 Power itens (think of functionalities)
