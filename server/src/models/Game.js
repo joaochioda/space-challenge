@@ -30,7 +30,7 @@ class Game {
       this.sendDataTofront();
       this.moveEnemies();
       this.checkEnemyCollision();
-    }, 1000 / 60);
+    }, 1000 / 40);
   }
   spawnEnemy() {
     this.spawnEnemyInterval = setInterval(() => {

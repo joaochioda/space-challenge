@@ -15,8 +15,13 @@ export default function UserProvider(props) {
     }, [])
 
     async function getMe() {
+        console.log(process.env.REACT_APP_ENV)
         try {
-            if (!user) {
+            if (process.env.REACT_APP_ENV === 'dev') {
+                setUser({ name: 'test', image: 'https://avatars.githubusercontent.com/u/47106171?v=4' });
+                return;
+            }
+            else if (!user) {
                 const response = await http.get(`/me`);
                 if (response) {
                     setUser(response.data);
