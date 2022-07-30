@@ -16,6 +16,10 @@ Front - react
 
 Infra - aws (ec2)
 
+Twitch sign up - aws (lambda function)
+
+Google sign up - aws (lambda function) - doing
+
 host - https://www.afeseila.co/
 
 ## Initial ideia
