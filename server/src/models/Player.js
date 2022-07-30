@@ -1,11 +1,11 @@
-const { Circle, Polygon, Box } = require("detect-collisions");
+const { Box } = require("detect-collisions");
 
 const Shot = require("./Shot");
 
 const maxAccelerationX = 3;
 const maxAccelerationY = 3;
 
-const acceleration = 0.3;
+const acceleration = 0.6;
 
 const maxXScreen = 500;
 const maxYScreen = 300;
@@ -33,13 +33,17 @@ class Player {
     };
     this.shoots = [];
     this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
+    this.createHandleMovimentation = {};
+    this.createShoot = false;
 
     this.socket.on("move", (data) => {
-      // only move after period of time
-      this.handleMovimentation(data);
+      this.createHandleMovimentation = data;
+      if (!data) {
+        this.movimentation = "";
+      }
     });
-    this.socket.on("shoot", (data) => {
-      this.shoot();
+    this.socket.on("shoot", () => {
+      this.createShoot = true;
     });
   }
 
@@ -141,8 +145,20 @@ class Player {
     }
   }
 
+  update() {
+    this.move();
+    if (this.createHandleMovimentation) {
+      this.handleMovimentation(this.createHandleMovimentation);
+      this.createHandleMovimentation = null;
+    }
+    if (this.createShoot) {
+      this.shoot();
+      this.createShoot = false;
+    }
+  }
+
   shoot() {
-    const shot = new Shot(this.x, this.y, 10);
+    const shot = new Shot(this.x + this.width, this.y + this.height / 3, 10);
     this.shoots.push(shot);
   }
 

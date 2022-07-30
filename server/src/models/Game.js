@@ -25,8 +25,8 @@ class Game {
   }
   startGame() {
     this.startGameInterval = setInterval(() => {
-      this.playerA.move();
-      this.playerB.move();
+      this.playerA.update();
+      this.playerB.update();
       this.sendDataTofront();
       this.moveEnemies();
       this.checkEnemyCollision();

@@ -68,6 +68,7 @@ function Game() {
         });
       }
       if (player.movimentation) {
+        console.log(player.movimentation);
         ctx.beginPath();
         ctx.strokeStyle = "red";
         if (player.movimentation === "up") {
