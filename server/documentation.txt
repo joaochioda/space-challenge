@@ -13,3 +13,9 @@ https://www.youtube.com/watch?v=FQ3QwvtWiMA - api
 # Pm2 startup 
 
 https://pm2.keymetrics.io/docs/usage/startup/
+
+# Pm2 commands
+
+pm2 start server.js
+
+pm2 monit

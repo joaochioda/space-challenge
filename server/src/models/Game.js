@@ -116,30 +116,6 @@ class Game {
     },${this.playerB.width},${this.playerB.height},${this.playerB.id},${
       this.playerB.movimentation
     }/${this.shootsToString()}/${this.enemiesToString()}`;
-    // const data = [
-    //   {
-    //     x: this.playerA.x,
-    //     y: this.playerA.y,
-    //     life: this.playerA.life,
-    //     width: this.playerA.width,
-    //     height: this.playerA.height,
-    //     id: this.playerA.id,
-    //     shoots: this.playerA.shoots,
-    //     movimentation: this.playerA.movimentation,
-    //     enemy: this.enemies,
-    //   },
-    //   {
-    //     x: this.playerB.x,
-    //     y: this.playerB.y,
-    //     width: this.playerB.width,
-    //     life: this.playerB.life,
-    //     height: this.playerB.height,
-    //     id: this.playerB.id,
-    //     shoots: this.playerB.shoots,
-    //     movimentation: this.playerB.movimentation,
-    //     enemy: this.enemies,
-    //   },
-    // ];
     this.playerA.socket.emit("gameData", data);
     this.playerB.socket.emit("gameData", data);
   }
