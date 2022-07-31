@@ -17,13 +17,13 @@ export const Main = () => {
     });
   }, []);
   return (
-    <div>
-      <div>
+    <>
+      <div id="header">
         {user && <span>{user.name}</span>}
         {user && <img src={user.image} alt="user" width={25} height={25} />}
       </div>
       <div>{selectedRoom ? <Game /> : <Room />}</div>
-    </div>
+    </>
   );
 };
 

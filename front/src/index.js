@@ -6,8 +6,9 @@ import Login from "./pages/Login";
 import Logged from "./pages/Logged";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import "./styles/index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <UserProvider>
     <React.StrictMode>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "../components/Canvas";
-import socket from "../Socket";
 import newSocket from "../Socket";
 const keyMap = {
   w: "up",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import socket from "../Socket";
+import { getStorage } from "../service/storageService";
 
 export const Room = () => {
   const [rooms, setRooms] = useState([]);
@@ -15,24 +16,30 @@ export const Room = () => {
   }, []);
 
   function handleCreaeteRoom() {
-    socket.emit("createRoom");
+    socket.emit("createRoom", getStorage());
   }
 
   function handleJoinRoom(room) {
-    socket.emit("joinRoom", room);
+    socket.emit("joinRoom", { room, bearer: getStorage() });
   }
   return (
-    <div>
+    <div id="room">
       <h1>Room</h1>
-      <ul>
-        {rooms.map((room) => (
-          <div>
-            <li key={room}>{room}</li>
-            <button onClick={() => handleJoinRoom(room)}>Join Room</button>
-          </div>
-        ))}
-      </ul>
-      <button onClick={handleCreaeteRoom}>Create Room</button>
+      {rooms.length > 0 ? (
+        <ul>
+          {rooms.map((room) => (
+            <div>
+              <li key={room.id}>{room.name}</li>
+              <button onClick={() => handleJoinRoom(room.id)}>Join Room</button>
+            </div>
+          ))}
+        </ul>
+      ) : (
+        <div className="no-rooms">No rooms</div>
+      )}
+      <button className="create-room" onClick={handleCreaeteRoom}>
+        Create Room
+      </button>
     </div>
   );
 };
