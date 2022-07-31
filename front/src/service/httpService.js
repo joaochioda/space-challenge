@@ -23,9 +23,12 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
-      deleteStorage();
       if (serviceStorage() === "twitch") {
-        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+        window.location.href = `${process.env.REACT_APP_TWITCH}/api/auth/twitch`;
+      } else if (serviceStorage() === "google") {
+        window.location.href = `${process.env.REACT_APP_GOOGLE}/auth/google`;
+      } else {
+        deleteStorage();
       }
     }
     return response;
@@ -33,9 +36,12 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response && error.response.data) {
       if (error.response.status === 401) {
-        deleteStorage();
         if (serviceStorage() === "twitch") {
-          window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+          window.location.href = `${process.env.REACT_APP_TWITCH}/api/auth/twitch`;
+        } else if (serviceStorage() === "google") {
+          window.location.href = `${process.env.REACT_APP_GOOGLE}/auth/google`;
+        } else {
+          deleteStorage();
         }
       }
     }

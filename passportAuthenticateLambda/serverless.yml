@@ -10,13 +10,17 @@ functions:
     handler: app.handler
     events:
       - http:
-          path: /
+          path: /twitch/{proxy+}
           method: ANY
           cors: true
+  google:
+    handler: google.handler
+    events:
       - http:
-          path: /{proxy+}
+          path: /google/{proxy+}
           method: ANY
           cors: true
+
 plugins:
   - serverless-offline
   - serverless-plugin-common-excludes
