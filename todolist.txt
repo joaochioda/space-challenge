@@ -1,7 +1,7 @@
 *Features*
 Game state
 Max hits on screen
-Power itens (think of functionalities)
+Power itens (do brainstorm functionalities)
 Boss
 Weapons
 Status
