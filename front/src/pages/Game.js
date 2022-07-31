@@ -31,85 +31,117 @@ function Game() {
     // return () => newSocket.close();
   }, []);
 
+  function convertDataStringToArray() {
+    if (data.length > 0) {
+      const dataArray = data.split("/");
+      const playerA = dataArray[0].split(",");
+      const playerB = dataArray[1].split(",");
+      const shoots = dataArray[2].split(",");
+      const enemies = dataArray[3].split(",");
+
+      return [playerA, playerB, shoots, enemies];
+    } else {
+      return [[], [], [], []];
+    }
+  }
+
+  function renderPlayer(player, ctx) {
+    const x = parseInt(player[0]);
+    const y = parseInt(player[1]);
+    const movimentation = player[6];
+    ctx.beginPath();
+    if (player[5] === newSocket.id) {
+      ctx.strokeStyle = "blue";
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = "red";
+    }
+    ctx.rect(player[0], player[1], player[3], player[4]);
+    ctx.stroke();
+    if (movimentation) {
+      renderMovimentation(ctx, x, y, movimentation);
+    }
+  }
+
+  function renderMovimentation(ctx, x, y, movimentation) {
+    ctx.beginPath();
+    ctx.strokeStyle = "red";
+    if (movimentation === "up") {
+      ctx.moveTo(x + 5, y + 10);
+      ctx.lineTo(x + 5, y + 25);
+      ctx.stroke();
+    } else if (movimentation === "down") {
+      ctx.moveTo(x + 5, y - 15);
+      ctx.lineTo(x + 5, y);
+      ctx.stroke();
+    } else if (movimentation === "right") {
+      ctx.moveTo(x - 15, y + 5);
+      ctx.lineTo(x, y + 5);
+      ctx.stroke();
+    } else if (movimentation === "upRight") {
+      ctx.moveTo(x + 5, y + 10);
+      ctx.lineTo(x + 5, y + 25);
+      ctx.stroke();
+      ctx.moveTo(x - 15, y + 5);
+      ctx.lineTo(x, y + 5);
+      ctx.stroke();
+    } else if (movimentation === "downRight") {
+      ctx.moveTo(x + 5, y - 15);
+      ctx.lineTo(x + 5, y);
+      ctx.stroke();
+      ctx.moveTo(x - 15, y + 5);
+      ctx.lineTo(x, y + 5);
+      ctx.stroke();
+    }
+    ctx.stroke();
+  }
+
+  function renderShoots(shoots, ctx) {
+    ctx.beginPath();
+    for (let i = 0; i < shoots.length; i += 2) {
+      ctx.strokeStyle = "black";
+      ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
+    }
+    ctx.stroke();
+  }
+
+  function renderEnemies(enemies, ctx) {
+    ctx.beginPath();
+
+    for (let i = 0; i < enemies.length; i += 6) {
+      const x = parseInt(enemies[i + 0]);
+      const y = parseInt(enemies[i + 1]);
+      // const life = parseInt(enemies[i + 2]);
+      const width = parseInt(enemies[i + 3]);
+      const height = parseInt(enemies[i + 4]);
+      const angle = parseInt(enemies[i + 5]);
+      const radAngle = (angle * Math.PI) / 180;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(radAngle);
+      ctx.translate(-x, -y);
+      ctx.fillRect(x - width / 2, y - height / 2, width, height);
+      ctx.restore();
+    }
+    ctx.stroke();
+  }
+
   const draw = (ctx) => {
+    const [playerA, playerB, shoots, enemies] = convertDataStringToArray();
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    data.forEach((player) => {
-      if (player.shoots.length > 0) {
-        player.shoots.forEach((shoot) => {
-          ctx.beginPath();
-          ctx.fillRect(shoot.x, shoot.y, 5, 5);
-          ctx.stroke();
-        });
-      }
-      if (player.enemy.length > 0) {
-        player.enemy.forEach((enemy) => {
-          // ctx.beginPath();
-          ctx.beginPath();
-
-          let angle = (enemy.angle * Math.PI) / 180;
-          // box.translate(-enemy.width / 2, -enemy.height / 2);
-          // box.setAngle(angle);
-          // box.draw(ctx);
-
-          ctx.save();
-          ctx.translate(enemy.x, enemy.y);
-          ctx.rotate(angle);
-          ctx.translate(-enemy.x, -enemy.y);
-
-          ctx.fillRect(
-            enemy.x - enemy.width / 2,
-            enemy.y - enemy.height / 2,
-            enemy.width,
-            enemy.height
-          );
-          ctx.restore();
-          ctx.stroke();
-        });
-      }
-      if (player.movimentation) {
-        ctx.beginPath();
-        ctx.strokeStyle = "red";
-        if (player.movimentation === "up") {
-          ctx.moveTo(player.x + 5, player.y + 10);
-          ctx.lineTo(player.x + 5, player.y + 25);
-          ctx.stroke();
-        } else if (player.movimentation === "down") {
-          ctx.moveTo(player.x + 5, player.y - 15);
-          ctx.lineTo(player.x + 5, player.y);
-          ctx.stroke();
-        } else if (player.movimentation === "right") {
-          ctx.moveTo(player.x - 15, player.y + 5);
-          ctx.lineTo(player.x, player.y + 5);
-          ctx.stroke();
-        } else if (player.movimentation === "upRight") {
-          ctx.moveTo(player.x + 5, player.y + 10);
-          ctx.lineTo(player.x + 5, player.y + 25);
-          ctx.stroke();
-          ctx.moveTo(player.x - 15, player.y + 5);
-          ctx.lineTo(player.x, player.y + 5);
-          ctx.stroke();
-        } else if (player.movimentation === "downRight") {
-          ctx.moveTo(player.x + 5, player.y - 15);
-          ctx.lineTo(player.x + 5, player.y);
-          ctx.stroke();
-          ctx.moveTo(player.x - 15, player.y + 5);
-          ctx.lineTo(player.x, player.y + 5);
-          ctx.stroke();
-        }
-        ctx.stroke();
-      }
-      ctx.beginPath();
-      if (player.id === newSocket.id) {
-        ctx.strokeStyle = "blue";
-        ctx.rect(player.x, player.y, player.width, player.height);
-        ctx.stroke();
-      } else {
-        ctx.strokeStyle = "red";
-        ctx.rect(player.x, player.y, player.width, player.height);
-        ctx.stroke();
-      }
-    });
+    if (playerA.length > 0) {
+      renderPlayer(playerA, ctx);
+    }
+    if (playerB.length > 0) {
+      renderPlayer(playerB, ctx);
+    }
+    if (shoots.length > 0) {
+      renderShoots(shoots, ctx);
+    }
+    if (enemies.length > 0) {
+      renderEnemies(enemies, ctx);
+    }
   };
 
   const sendMove = (newSocket) => {
@@ -174,7 +206,7 @@ function Game() {
   return (
     <div>
       <p>{ping}ms</p>
-      {data && <div> Life: {data.find((d) => d.id === socket.id)?.life}</div>}
+      {/* {data && <div> Life: {data.find((d) => d.id === socket.id)?.life}</div>} */}
       <Canvas
         draw={draw}
         handleKeyDownCustom={handleKeyDownCustom}

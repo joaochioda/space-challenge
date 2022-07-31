@@ -1,6 +1,5 @@
 *Features*
-only move after period of time
-
+Google Login
 Game state
 Max hits on screen
 Power itens (think of functionalities)

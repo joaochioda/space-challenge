@@ -25,8 +25,8 @@ class Game {
   }
   startGame() {
     this.startGameInterval = setInterval(() => {
-      this.playerA.move();
-      this.playerB.move();
+      this.playerA.update();
+      this.playerB.update();
       this.sendDataTofront();
       this.moveEnemies();
       this.checkEnemyCollision();
@@ -87,31 +87,35 @@ class Game {
     });
   }
 
+  shootsToString() {
+    const shoots = this.playerA.shoots.concat(this.playerB.shoots);
+    return shoots
+      .map((shoot) => {
+        return `${shoot.x.toFixed(0)},${shoot.y.toFixed(0)}`;
+      })
+      .join(",");
+  }
+
+  enemiesToString() {
+    return this.enemies
+      .map((enemy) => {
+        return `${enemy.x.toFixed(0)},${enemy.y.toFixed(0)},${enemy.life},${
+          enemy.width
+        },${enemy.height},${enemy.angle}`;
+      })
+      .join(",");
+  }
+
   sendDataTofront() {
-    const data = [
-      {
-        x: this.playerA.x,
-        y: this.playerA.y,
-        life: this.playerA.life,
-        width: this.playerA.width,
-        height: this.playerA.height,
-        id: this.playerA.id,
-        shoots: this.playerA.shoots,
-        movimentation: this.playerA.movimentation,
-        enemy: this.enemies,
-      },
-      {
-        x: this.playerB.x,
-        y: this.playerB.y,
-        width: this.playerB.width,
-        life: this.playerB.life,
-        height: this.playerB.height,
-        id: this.playerB.id,
-        shoots: this.playerB.shoots,
-        movimentation: this.playerB.movimentation,
-        enemy: this.enemies,
-      },
-    ];
+    const data = `${this.playerA.x.toFixed(0)},${this.playerA.y.toFixed(0)},${
+      this.playerA.life
+    },${this.playerA.width},${this.playerA.height},${this.playerA.id},${
+      this.playerA.movimentation
+    }/${this.playerB.x.toFixed(0)},${this.playerB.y.toFixed(0)},${
+      this.playerB.life
+    },${this.playerB.width},${this.playerB.height},${this.playerB.id},${
+      this.playerB.movimentation
+    }/${this.shootsToString()}/${this.enemiesToString()}`;
     this.playerA.socket.emit("gameData", data);
     this.playerB.socket.emit("gameData", data);
   }
