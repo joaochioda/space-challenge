@@ -116,7 +116,9 @@ app.get("/auth/twitch/callback", function (req, res, next) {
       );
       console.log(token);
       // Redirect if it succeeds
-      return res.redirect(`${FRONT_URL}/logged?bearer=${token}`);
+      return res.redirect(
+        `${FRONT_URL}/logged?bearer=${token}?=service=twitch`
+      );
     });
   })(req, res, next);
 });

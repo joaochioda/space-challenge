@@ -1,0 +1,17 @@
+#room ul div{
+    display: flex;
+    gap: 10px;
+}
+#room ul {
+    /* padding-bottom: 30px; */
+}
+
+#room .create-room {
+    margin-top: 30px;
+}
+
+#header {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}

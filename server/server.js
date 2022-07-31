@@ -8,6 +8,7 @@ const { v4: uuidv4 } = require("uuid");
 var jwt = require("jsonwebtoken");
 const cors = require("cors");
 const { SESSION_SECRET } = require("./keys_twitch");
+
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -37,8 +38,7 @@ app.get("/me", (req, res) => {
       req?.headers?.authorization &&
       req?.headers?.authorization?.split(" ")[0] === "Bearer"
     ) {
-      const token = req.headers.authorization.split(" ")[1];
-      var decoded = jwt.verify(token, SESSION_SECRET);
+      const decoded = handleBearer(req.headers.authorization.split(" ")[1]);
       if (decoded) {
         //verify backend if access token is valid
         res.send({ name: decoded.name, image: decoded.image });
@@ -60,34 +60,52 @@ io.on("connection", (socket) => {
     callback();
   });
 
-  socket.on("createRoom", () => {
-    const idRoom = uuidv4();
-    const room = {
-      id: idRoom,
-      players: [socket.id],
-    };
-    rooms.push(room);
-    socket.emit("joinedRoom", "bla");
+  socket.on("createRoom", (bearer) => {
+    try {
+      const decoded = handleBearer(bearer);
+      const idRoom = uuidv4();
+      const room = {
+        id: idRoom,
+        players: [socket.id],
+        name: `${decoded.name}'s room`,
+      };
+      rooms.push(room);
+      socket.emit("joinedRoom", "bla");
+    } catch (err) {
+      socket.disconnect();
+    }
   });
 
   socket.on("roomList", () => {
     socket.emit(
       "roomList",
-      rooms.filter((room) => room.players.length < 2).map((room) => room.id)
+      rooms
+        .filter((room) => room.players.length < 2)
+        .map((room) => {
+          return {
+            id: room.id,
+            name: room.name,
+          };
+        })
     );
   });
 
-  socket.on("joinRoom", async (room) => {
-    const roomFound = rooms.find((r) => r.id === room);
-    if (roomFound) {
-      if (roomFound.players.length === 1) {
-        roomFound.players.push(socket.id);
-        const player = players.find((p) => p.id === roomFound.players[0]);
-        const gameObj = new Game([player, socket], roomFound.id);
-        games.push(gameObj);
-        socket.emit("joinedRoom", room);
+  socket.on("joinRoom", async ({ room, bearer }) => {
+    try {
+      handleBearer(bearer);
+      const roomFound = rooms.find((r) => r.id === room);
+      if (roomFound) {
+        if (roomFound.players.length === 1) {
+          roomFound.players.push(socket.id);
+          const player = players.find((p) => p.id === roomFound.players[0]);
+          const gameObj = new Game([player, socket], roomFound.id);
+          games.push(gameObj);
+          socket.emit("joinedRoom", room);
+        }
+        // rooms.splice(rooms.indexOf(room), 1);
       }
-      // rooms.splice(rooms.indexOf(room), 1);
+    } catch (err) {
+      socket.disconnect();
     }
   });
 
@@ -113,3 +131,8 @@ io.on("connection", (socket) => {
 server.listen(3333, () => {
   console.log("listening on :3333");
 });
+
+function handleBearer(bearer) {
+  const token = bearer;
+  return jwt.verify(token, SESSION_SECRET);
+}

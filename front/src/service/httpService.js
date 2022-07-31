@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
-import { getStorage, deleteStorage } from "./storageService";
+import { getStorage, deleteStorage, serviceStorage } from "./storageService";
 const baseUrl = process.env.REACT_APP_BACK_URL;
 
 // Add a request interceptor
@@ -24,7 +24,9 @@ axios.interceptors.response.use(
   (response) => {
     if (response.status === 401) {
       deleteStorage();
-      window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+      if (serviceStorage() === "twitch") {
+        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+      }
     }
     return response;
   },
@@ -32,7 +34,9 @@ axios.interceptors.response.use(
     if (error.response && error.response.data) {
       if (error.response.status === 401) {
         deleteStorage();
-        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+        if (serviceStorage() === "twitch") {
+          window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+        }
       }
     }
   }
