@@ -80,13 +80,13 @@ passport.use(
   )
 );
 
-app.get("/api/info", (req, res) => {
+app.get("/twitch/api/info", (req, res) => {
   res.send({ application: "sample-app", version: "1" });
 });
 
-app.get("/api/auth/twitch", passport.authenticate("twitch"));
+app.get("/twitch/api/auth/twitch", passport.authenticate("twitch"));
 
-app.get("/auth/twitch/callback", function (req, res, next) {
+app.get("/twitch/auth/twitch/callback", function (req, res, next) {
   passport.authenticate("twitch", function (err, user, info) {
     if (err) {
       return next(err);
@@ -120,11 +120,11 @@ app.get("/auth/twitch/callback", function (req, res, next) {
   })(req, res, next);
 });
 
-app.get("/api/v1/hi", (req, res) => {
+app.get("/twitch/api/v1/hi", (req, res) => {
   res.send({ hi: "there s" });
 });
 
-app.post("/api/v1/getback", (req, res) => {
+app.post("/twitch/api/v1/getback", (req, res) => {
   res.send({ ...req.body });
 });
 //app.listen(3000, () => console.log(`Listening on: 3000`));

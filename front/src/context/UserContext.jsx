@@ -17,11 +17,22 @@ export default function UserProvider(props) {
     }, [])
 
     function loginTwitch() {
-        window.location.href = `${process.env.REACT_APP_TWITCH}/dev/api/auth/twitch`;
+        if (process.env.REACT_APP_ENV === 'dev') {
+            getMe();
+        } else {
+            window.location.href = `${process.env.REACT_APP_TWITCH}/api/auth/twitch`;
+        }
+    }
+
+    function loginGoogle() {
+        if (process.env.REACT_APP_ENV === 'dev') {
+            getMe();
+        } else {
+            window.location.href = `${process.env.REACT_APP_GOOGLE}/auth/google`;
+        }
     }
 
     async function getMe() {
-        console.log(process.env.REACT_APP_ENV)
         try {
             if (process.env.REACT_APP_ENV === 'dev') {
                 setUser({ name: 'test', image: 'https://avatars.githubusercontent.com/u/47106171?v=4' });
@@ -54,7 +65,7 @@ export default function UserProvider(props) {
     }
     return (
         <div>
-            <UserContext.Provider value={{ user, setUser, getMe, handleBearer, error, loginTwitch, handleService }}>
+            <UserContext.Provider value={{ user, setUser, getMe, handleBearer, error, loginTwitch, handleService, loginGoogle }}>
                 {props.children}
             </UserContext.Provider>
         </div>
