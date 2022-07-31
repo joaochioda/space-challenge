@@ -1,6 +1,4 @@
 *Features*
-Google Login
-Name Room
 Game state
 Max hits on screen
 Power itens (think of functionalities)
