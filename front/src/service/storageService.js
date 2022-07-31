@@ -15,6 +15,7 @@ const serviceStorage = () => {
 
 const deleteStorage = () => {
   localStorage.removeItem(JWT_TOKEN_SPACE);
+  localStorage.removeItem(SERVICE_STORAGE);
   window.location.reload();
 };
 

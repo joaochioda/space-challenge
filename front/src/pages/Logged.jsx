@@ -8,10 +8,13 @@ const Logged = () => {
 
     useEffect(() => {
         const href = window.location.href;
-        const bearer = href.split("bearer=")[1];
-        const service = href.split("service=")[1];
-        handleBearer(bearer);
-        handleService(service);
+        if (href.includes('/logged')) {
+            const allStringParams = href.split("bearer=")[1];
+            const params = allStringParams.split("?service=");
+
+            handleBearer(params[0]);
+            handleService(params[1]);
+        }
     }, [handleBearer])
 
     return (
