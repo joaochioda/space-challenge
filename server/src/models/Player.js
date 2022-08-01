@@ -35,7 +35,7 @@ class Player {
     this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
     this.createHandleMovimentation = {};
     this.createShoot = false;
-
+    this.maxShots = 3;
     this.socket.on("move", (data) => {
       this.createHandleMovimentation = data;
       if (!data) {
@@ -158,8 +158,10 @@ class Player {
   }
 
   shoot() {
-    const shot = new Shot(this.x + this.width, this.y + this.height / 3, 10);
-    this.shoots.push(shot);
+    if (this.shoots.length < this.maxShots) {
+      const shot = new Shot(this.x + this.width, this.y + this.height / 3, 10);
+      this.shoots.push(shot);
+    }
   }
 
   takeDamage(damage) {

@@ -1,6 +1,6 @@
 *Features*
+Multiple shape enemies
 Game state
-Max hits on screen
 Power itens (do brainstorm functionalities)
 Boss
 Weapons
