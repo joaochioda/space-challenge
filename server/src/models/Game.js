@@ -35,11 +35,11 @@ class Game {
   spawnEnemy() {
     this.spawnEnemyInterval = setInterval(() => {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
-      const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
+      // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
       const enemy1 = new Enemy("easy", "up", spin, "square");
       this.enemies.push(enemy1);
-      const enemy2 = new Enemy("easy", "down", spin, "square");
+      const enemy2 = new Enemy("easy", "down", false, "circle");
       this.enemies.push(enemy2);
     }, 3000);
   }
@@ -101,7 +101,7 @@ class Game {
       .map((enemy) => {
         return `${enemy.x.toFixed(0)},${enemy.y.toFixed(0)},${enemy.life},${
           enemy.width
-        },${enemy.height},${enemy.angle}`;
+        },${enemy.height},${enemy.angle},${enemy.type}`;
       })
       .join(",");
   }

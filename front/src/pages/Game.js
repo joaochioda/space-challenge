@@ -104,24 +104,39 @@ function Game() {
     ctx.stroke();
   }
 
+  function renderSquare(ctx, x, y, width, height, angle) {
+    const radAngle = (angle * Math.PI) / 180;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(radAngle);
+    ctx.translate(-x, -y);
+    ctx.fillRect(x - width / 2, y - height / 2, width, height);
+    ctx.restore();
+  }
+
+  function renderCircle(ctx, x, y) {
+    console.log(x, y);
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    ctx.stroke();
+  }
+
   function renderEnemies(enemies, ctx) {
     ctx.beginPath();
-
-    for (let i = 0; i < enemies.length; i += 6) {
+    for (let i = 0; i < enemies.length; i += 7) {
       const x = parseInt(enemies[i + 0]);
       const y = parseInt(enemies[i + 1]);
-      // const life = parseInt(enemies[i + 2]);
       const width = parseInt(enemies[i + 3]);
       const height = parseInt(enemies[i + 4]);
       const angle = parseInt(enemies[i + 5]);
-      const radAngle = (angle * Math.PI) / 180;
-
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(radAngle);
-      ctx.translate(-x, -y);
-      ctx.fillRect(x - width / 2, y - height / 2, width, height);
-      ctx.restore();
+      const type = enemies[i + 6];
+      if (type === "square") {
+        renderSquare(ctx, x, y, width, height, angle);
+      } else if (type === "circle") {
+        console.log("circle");
+        renderCircle(ctx, x, y);
+      }
     }
     ctx.stroke();
   }

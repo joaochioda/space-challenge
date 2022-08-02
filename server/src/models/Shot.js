@@ -1,11 +1,11 @@
-const { Circle, Polygon, Box } = require("detect-collisions");
+const { Box } = require("detect-collisions");
 
 class Shot {
   constructor(x, y, speed) {
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
+    this.Shape = new Box({ x: this.x, y: this.y }, 5, 5);
   }
   update() {
     this.x += this.speed;
