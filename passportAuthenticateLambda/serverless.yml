@@ -1,0 +1,26 @@
+service: login-twitch
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: /twitch/{proxy+}
+          method: ANY
+          cors: true
+  google:
+    handler: google.handler
+    events:
+      - http:
+          path: /google/{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-common-excludes

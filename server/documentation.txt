@@ -1,0 +1,21 @@
+# Create domain
+
+https://www.domain.com/ - buy domain
+aws route 53 - create route zone and add the name servers on domain.com
+aws certificate manager - create certificate to https and add on dns records the name and content off certificate
+aws cloudfront - create distribution point to s3 and add certificate
+aws route 53 - create new record same name of cloudfront and route traffic to alias to cloudfront distribution
+wait and acess the site
+
+https://www.youtube.com/watch?v=lPVgfSXTE1Y
+https://www.youtube.com/watch?v=FQ3QwvtWiMA - api
+
+# Pm2 startup 
+
+https://pm2.keymetrics.io/docs/usage/startup/
+
+# Pm2 commands
+
+pm2 start server.js
+
+pm2 monit

@@ -1,3 +1,5 @@
+const { Circle, Polygon, Box } = require("detect-collisions");
+
 class Enemy {
   constructor(difficulty, where, spin, type) {
     this.x = 800;
@@ -11,6 +13,33 @@ class Enemy {
     this.angle = 0;
     this.spaw();
   }
+
+  setParamsDifficulty() {
+    if (this.difficulty === "easy") {
+      this.velocity = 3;
+      this.life = 10;
+      this.damage = 10;
+    } else if (this.difficulty === "medium") {
+      this.velocity = 5;
+      this.life = 20;
+      this.damage = 20;
+    } else {
+      this.velocity = 7;
+      this.life = 30;
+      this.damage = 30;
+    }
+  }
+
+  setParamsShape() {
+    if (this.type === "square") {
+      this.Shape = new Box({ x: this.x, y: this.y }, this.width, this.height);
+      this.Shape.translate(-this.width / 2, -this.height / 2);
+    } else if (this.type === "circle") {
+      this.Shape = new Circle({ x: this.x, y: this.y }, 10);
+      // this.Shape.translate(-this.width / 2, -this.width / 2);
+    }
+  }
+
   spaw() {
     this.x = 800;
     this.width = 50;
@@ -22,24 +51,24 @@ class Enemy {
       this.y = Math.floor(Math.random() * (600 - 300) + 300);
     }
 
-    if (this.type === "circles") {
-      this.spin = true;
-    }
-
-    if (this.difficulty === "easy") {
-      this.velocity = 3;
-      this.life = 10;
-    }
+    this.setParamsDifficulty();
+    this.setParamsShape();
   }
+
+  spawCircle() {}
+
   update() {
     this.x -= this.velocity;
     this.x = Math.floor(this.x);
+    this.Shape.setPosition(this.x, this.y);
     if (this.spin) {
       this.rotate();
     }
   }
   rotate() {
-    this.angle += 1;
+    this.angle += 0.5;
+    let angle = (this.angle * 3.14) / 180;
+    this.Shape.rotate(angle);
   }
   isVisible() {
     return this.x < -10;

@@ -1,4 +1,8 @@
-[Front]
-
-[Server]
-colliders
+*Features*
+Multiple shape enemies
+Game state
+Power itens (do brainstorm functionalities)
+Boss
+Weapons
+Status
+Level
