@@ -36,7 +36,19 @@ class Enemy {
       this.Shape.translate(-this.width / 2, -this.height / 2);
     } else if (this.type === "circle") {
       this.Shape = new Circle({ x: this.x, y: this.y }, 10);
-      // this.Shape.translate(-this.width / 2, -this.width / 2);
+    } else if (this.type === "spacenemy") {
+      this.Shape = new Polygon({ x: this.x, y: this.y }, [
+        { x: 20, y: -10 },
+        { x: 30, y: -10 },
+        { x: 50, y: -30 },
+        { x: 70, y: -10 },
+        { x: 70, y: 10 },
+        { x: 50, y: 30 },
+        { x: 50, y: 30 },
+        { x: 30, y: 10 },
+        { x: 20, y: 10 },
+        { x: 0, y: 0 },
+      ]);
     }
   }
 

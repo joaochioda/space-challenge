@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "../components/Canvas";
+import me from "../assets/me-space12.png";
+
 import newSocket from "../Socket";
 const keyMap = {
   w: "up",
@@ -13,9 +15,16 @@ const keyPressed = [];
 function Game() {
   const [ping, setPing] = useState(0);
   const [data, setData] = useState([]);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     sendMove(newSocket);
+
+    const img = new Image();
+    img.src = me;
+    img.onload = () => {
+      setImage(img);
+    };
     setInterval(() => {
       const start = Date.now();
       newSocket.emit("ping", () => {
@@ -96,12 +105,15 @@ function Game() {
   }
 
   function renderShoots(shoots, ctx) {
-    ctx.beginPath();
-    for (let i = 0; i < shoots.length; i += 2) {
-      ctx.strokeStyle = "black";
-      ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
+    if (shoots.length > 1) {
+      ctx.beginPath();
+      console.log("shoots", shoots);
+      for (let i = 0; i < shoots.length; i += 2) {
+        ctx.strokeStyle = "black";
+        ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
+      }
+      ctx.stroke();
     }
-    ctx.stroke();
   }
 
   function renderSquare(ctx, x, y, width, height, angle) {
@@ -116,10 +128,31 @@ function Game() {
   }
 
   function renderCircle(ctx, x, y) {
-    console.log(x, y);
     ctx.beginPath();
     ctx.arc(x, y, 10, 0, 2 * Math.PI);
     ctx.stroke();
+  }
+
+  function renderSpacenemy(ctx, x, y) {
+    if (image) {
+      console.log(x, y);
+      ctx.beginPath();
+      ctx.strokeStyle = "black";
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + 20, y + -10);
+      ctx.lineTo(x + 30, y + -10);
+      ctx.lineTo(x + 50, y + -30);
+      ctx.lineTo(x + 70, y + -10);
+      ctx.lineTo(x + 70, y + 10);
+      ctx.lineTo(x + 50, y + 30);
+      ctx.lineTo(x + 50, y + 30);
+      ctx.lineTo(x + 30, y + 10);
+      ctx.lineTo(x + 20, y + 10);
+      ctx.lineTo(x, y);
+
+      ctx.stroke();
+      ctx.drawImage(image, x + 4, y - 30);
+    }
   }
 
   function renderEnemies(enemies, ctx) {
@@ -136,6 +169,8 @@ function Game() {
       } else if (type === "circle") {
         console.log("circle");
         renderCircle(ctx, x, y);
+      } else if (type === "spacenemy") {
+        renderSpacenemy(ctx, x, y);
       }
     }
     ctx.stroke();
