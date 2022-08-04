@@ -39,7 +39,7 @@ class Game {
 
       const enemy1 = new Enemy("easy", "up", spin, "square");
       this.enemies.push(enemy1);
-      const enemy2 = new Enemy("easy", "down", false, "circle");
+      const enemy2 = new Enemy("easy", "down", false, "spacenemy");
       this.enemies.push(enemy2);
     }, 3000);
   }
