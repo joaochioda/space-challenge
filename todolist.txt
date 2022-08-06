@@ -1,5 +1,12 @@
 *Features*
-Multiple shape enemies
+create class smart enemy?
+
+SpaceshipEnemy lv1 - atack
+SpaceshipEnemy lv2 - move to player y and atack
+SpaceshipEnemy lv3 - move to player y and atack and shot missile
+Boss (states =
+missile system - object that follows player x/y and can be destroyed 
+
 Game state
 Power itens (do brainstorm functionalities)
 Boss
