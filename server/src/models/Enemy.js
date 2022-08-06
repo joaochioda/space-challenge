@@ -1,7 +1,7 @@
 const { Circle, Polygon, Box } = require("detect-collisions");
 
 class Enemy {
-  constructor(difficulty, where, spin, type) {
+  constructor(difficulty, where, spin = false, type) {
     this.x = 800;
     this.y = 0;
     this.type = type;
@@ -67,8 +67,6 @@ class Enemy {
     this.setParamsShape();
   }
 
-  spawCircle() {}
-
   update() {
     this.x -= this.velocity;
     this.x = Math.floor(this.x);
@@ -85,6 +83,7 @@ class Enemy {
   isVisible() {
     return this.x < -10;
   }
+  destroy() {}
 }
 
 module.exports = Enemy;

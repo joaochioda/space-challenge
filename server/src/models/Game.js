@@ -1,5 +1,7 @@
 const Player = require("./Player");
 const Enemy = require("./Enemy");
+const SpaceShipEnemy = require("./SpaceShipEnemy");
+
 const { System } = require("detect-collisions");
 
 const typesEnemy = (int) => {
@@ -37,10 +39,18 @@ class Game {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
       // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-      const enemy1 = new Enemy("easy", "up", spin, "square");
-      this.enemies.push(enemy1);
-      const enemy2 = new Enemy("easy", "down", false, "spacenemy");
-      this.enemies.push(enemy2);
+      // const enemy1 = new Enemy("easy", "up", spin, "square");
+      // this.enemies.push(enemy1);
+      // const enemy2 = new Enemy("easy", "down", false, "spacenemy");
+      // this.enemies.push(enemy2);
+      const spaceShip = new SpaceShipEnemy(
+        "easy",
+        "down",
+        false,
+        "spacenemy",
+        1
+      );
+      this.enemies.push(spaceShip);
     }, 3000);
   }
 
@@ -58,10 +68,12 @@ class Game {
   checkEnemyCollision() {
     this.enemies.forEach((enemy) => {
       if (this.system.checkCollision(this.playerA.Shape, enemy.Shape)) {
+        enemy.destroy();
         this.enemies.splice(this.enemies.indexOf(enemy), 1);
         this.playerA.takeDamage(enemy.damage);
       }
       if (this.system.checkCollision(this.playerB.Shape, enemy.Shape)) {
+        enemy.destroy();
         this.enemies.splice(this.enemies.indexOf(enemy), 1);
         this.playerB.takeDamage(enemy.damage);
       }
@@ -71,6 +83,7 @@ class Game {
       this.enemies.forEach((enemy) => {
         if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
           enemy.life -= shoot.damage;
+          enemy.destroy();
           this.playerA.shoots.splice(this.playerA.shoots.indexOf(shoot), 1);
           this.enemies.splice(this.enemies.indexOf(enemy), 1);
         }
@@ -80,6 +93,7 @@ class Game {
       this.enemies.forEach((enemy) => {
         if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
           enemy.life -= shoot.damage;
+          enemy.destroy();
           this.playerB.shoots.splice(this.playerB.shoots.indexOf(shoot), 1);
           this.enemies.splice(this.enemies.indexOf(enemy), 1);
         }
@@ -99,9 +113,21 @@ class Game {
   enemiesToString() {
     return this.enemies
       .map((enemy) => {
+        let stringShotsEnemy = "";
+        if (enemy.shots && enemy.shots.length > 0) {
+          enemy.shots.forEach((shoot, idx) => {
+            if (idx === enemy.shots.length - 1) {
+              stringShotsEnemy += `${shoot.x.toFixed(0)}@${shoot.y.toFixed(0)}`;
+            } else {
+              stringShotsEnemy += `${shoot.x.toFixed(0)}@${shoot.y.toFixed(
+                0
+              )}@`;
+            }
+          });
+        }
         return `${enemy.x.toFixed(0)},${enemy.y.toFixed(0)},${enemy.life},${
           enemy.width
-        },${enemy.height},${enemy.angle},${enemy.type}`;
+        },${enemy.height},${enemy.angle},${enemy.type},${stringShotsEnemy}`;
       })
       .join(",");
   }
