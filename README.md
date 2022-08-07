@@ -27,3 +27,19 @@ host - https://www.afeseila.co/
 
 ## Update 16/07
 ![update1607](https://user-images.githubusercontent.com/47106171/179361796-3ed3f9d5-b3ac-461e-a68c-5809553f977f.gif)
+
+## Update 02/08
+
+* Host with ssl
+* Server up (ec2)
+
+Login Google/Twitch using lambda aws:
+
+![image](https://user-images.githubusercontent.com/47106171/182496235-b850a8f7-4809-4fc9-a538-c350aeb0f168.png)
+
+Room System:
+
+![image](https://user-images.githubusercontent.com/47106171/182496352-5d2df01d-caae-47f3-8d6f-fa8ddf0380a4.png)
+![image](https://user-images.githubusercontent.com/47106171/182496359-fac760ba-506a-4251-892c-a6db40581f9a.png)
+
+

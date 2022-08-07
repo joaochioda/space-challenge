@@ -32,8 +32,8 @@ const Canvas = props => {
             ref={canvasRef} {...rest}
             width={800}
             height={620}
-            onKeyDown={(e) => props.handleKeyDownCustom(e)}
-            onKeyUp={(e) => props.handleKeyUpCustom(e)}
+            onKeyDown={(e) => props.handlekeydow(e)}
+            onKeyUp={(e) => props.handlekeyupcustom(e)}
         />
     )
 }

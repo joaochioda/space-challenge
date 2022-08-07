@@ -107,11 +107,20 @@ function Game() {
   function renderShoots(shoots, ctx) {
     if (shoots.length > 1) {
       ctx.beginPath();
-      console.log("shoots", shoots);
       for (let i = 0; i < shoots.length; i += 2) {
         ctx.strokeStyle = "black";
         ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
       }
+      ctx.stroke();
+    }
+  }
+
+  function enemyShots(ctx, stringShots) {
+    const shots = stringShots.split("@");
+    for (let i = 0; i < shots.length; i += 2) {
+      ctx.beginPath();
+      ctx.strokeStyle = "black";
+      ctx.fillRect(shots[i], shots[i + 1], 5, 5);
       ctx.stroke();
     }
   }
@@ -135,7 +144,6 @@ function Game() {
 
   function renderSpacenemy(ctx, x, y) {
     if (image) {
-      console.log(x, y);
       ctx.beginPath();
       ctx.strokeStyle = "black";
       ctx.moveTo(x, y);
@@ -157,17 +165,22 @@ function Game() {
 
   function renderEnemies(enemies, ctx) {
     ctx.beginPath();
-    for (let i = 0; i < enemies.length; i += 7) {
+    for (let i = 0; i < enemies.length; i += 8) {
       const x = parseInt(enemies[i + 0]);
       const y = parseInt(enemies[i + 1]);
       const width = parseInt(enemies[i + 3]);
       const height = parseInt(enemies[i + 4]);
       const angle = parseInt(enemies[i + 5]);
       const type = enemies[i + 6];
+      const shots = enemies[i + 7];
+
+      if (shots && shots.length > 0) {
+        enemyShots(ctx, shots);
+      }
+
       if (type === "square") {
         renderSquare(ctx, x, y, width, height, angle);
       } else if (type === "circle") {
-        console.log("circle");
         renderCircle(ctx, x, y);
       } else if (type === "spacenemy") {
         renderSpacenemy(ctx, x, y);
@@ -185,10 +198,10 @@ function Game() {
     if (playerB.length > 0) {
       renderPlayer(playerB, ctx);
     }
-    if (shoots.length > 0) {
+    if (shoots.length > 0 && shoots[0] !== "") {
       renderShoots(shoots, ctx);
     }
-    if (enemies.length > 0) {
+    if (enemies.length > 0 && enemies[0] !== "") {
       renderEnemies(enemies, ctx);
     }
   };
@@ -230,14 +243,14 @@ function Game() {
     }, 100);
   };
 
-  const handleKeyDownCustom = (e) => {
+  const handlekeydow = (e) => {
     const key = e.code === "Space" ? e.code : keyMap[e.key];
     if (key && !keyPressed.includes(key)) {
       keyPressed.push(key);
     }
   };
 
-  const handleKeyUpCustom = (e) => {
+  const handlekeyupcustom = (e) => {
     if (e.code === "Space") {
       newSocket.emit("shoot");
     } else {
@@ -258,8 +271,8 @@ function Game() {
       {/* {data && <div> Life: {data.find((d) => d.id === socket.id)?.life}</div>} */}
       <Canvas
         draw={draw}
-        handleKeyDownCustom={handleKeyDownCustom}
-        handleKeyUpCustom={handleKeyUpCustom}
+        handlekeydow={handlekeydow}
+        handlekeyupcustom={handlekeyupcustom}
       />
     </div>
   );
