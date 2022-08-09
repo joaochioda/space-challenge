@@ -10,6 +10,7 @@ class Enemy {
     this.velocity = 1;
     this.life = 10;
     this.where = where;
+    this.live = true;
     this.angle = 0;
     this.spaw();
   }
@@ -68,11 +69,13 @@ class Enemy {
   }
 
   update() {
-    this.x -= this.velocity;
-    this.x = Math.floor(this.x);
-    this.Shape.setPosition(this.x, this.y);
-    if (this.spin) {
-      this.rotate();
+    if (this.live) {
+      this.x -= this.velocity;
+      this.x = Math.floor(this.x);
+      this.Shape.setPosition(this.x, this.y);
+      if (this.spin) {
+        this.rotate();
+      }
     }
   }
   rotate() {
@@ -81,9 +84,21 @@ class Enemy {
     this.Shape.rotate(angle);
   }
   isVisible() {
-    return this.x < -10;
+    return this.x > -10;
   }
-  destroy() {}
+  canDestoy() {
+    return !this.live || this.x < -10;
+  }
+  kill() {
+    this.x = 0;
+    this.y = 0;
+    this.life = 0;
+    this.height = 0;
+    this.width = 0;
+    this.angle = 0;
+    this.type = "";
+    this.live = false;
+  }
 }
 
 module.exports = Enemy;

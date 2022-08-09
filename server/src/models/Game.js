@@ -39,8 +39,8 @@ class Game {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
       // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
-      // const enemy1 = new Enemy("easy", "up", spin, "square");
-      // this.enemies.push(enemy1);
+      const enemy1 = new Enemy("easy", "up", spin, "square");
+      this.enemies.push(enemy1);
       // const enemy2 = new Enemy("easy", "down", false, "spacenemy");
       // this.enemies.push(enemy2);
       const spaceShip = new SpaceShipEnemy(
@@ -51,7 +51,7 @@ class Game {
         1
       );
       this.enemies.push(spaceShip);
-    }, 3000);
+    }, 6000);
   }
 
   moveEnemies() {
@@ -59,8 +59,12 @@ class Game {
       enemy.update();
     });
     this.enemies = this.enemies.filter((enemy) => {
-      this.system.remove(enemy.Shape);
-      return !enemy.isVisible();
+      if (enemy.canDestoy()) {
+        this.system.remove(enemy.Shape);
+        return false;
+      } else {
+        return true;
+      }
     });
     this.system.update();
   }
@@ -81,21 +85,27 @@ class Game {
 
     this.playerA.shoots.forEach((shoot) => {
       this.enemies.forEach((enemy) => {
-        if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
+        if (
+          enemy.live &&
+          this.system.checkCollision(shoot.Shape, enemy.Shape)
+        ) {
           enemy.life -= shoot.damage;
-          enemy.destroy();
+          enemy.kill();
           this.playerA.shoots.splice(this.playerA.shoots.indexOf(shoot), 1);
-          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+          // this.enemies.splice(this.enemies.indexOf(enemy), 1);
         }
       });
     });
     this.playerB.shoots.forEach((shoot) => {
       this.enemies.forEach((enemy) => {
-        if (this.system.checkCollision(shoot.Shape, enemy.Shape)) {
+        if (
+          enemy.live &&
+          this.system.checkCollision(shoot.Shape, enemy.Shape)
+        ) {
           enemy.life -= shoot.damage;
-          enemy.destroy();
+          enemy.kill();
           this.playerB.shoots.splice(this.playerB.shoots.indexOf(shoot), 1);
-          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+          // this.enemies.splice(this.enemies.indexOf(enemy), 1);
         }
       });
     });
