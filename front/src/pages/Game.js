@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Canvas from "../components/Canvas";
+import me from "../assets/me-space12.png";
+
 import newSocket from "../Socket";
 const keyMap = {
   w: "up",
@@ -13,9 +15,16 @@ const keyPressed = [];
 function Game() {
   const [ping, setPing] = useState(0);
   const [data, setData] = useState([]);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     sendMove(newSocket);
+
+    const img = new Image();
+    img.src = me;
+    img.onload = () => {
+      setImage(img);
+    };
     setInterval(() => {
       const start = Date.now();
       newSocket.emit("ping", () => {
@@ -96,32 +105,86 @@ function Game() {
   }
 
   function renderShoots(shoots, ctx) {
-    ctx.beginPath();
-    for (let i = 0; i < shoots.length; i += 2) {
-      ctx.strokeStyle = "black";
-      ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
+    if (shoots.length > 1) {
+      ctx.beginPath();
+      for (let i = 0; i < shoots.length; i += 2) {
+        ctx.strokeStyle = "black";
+        ctx.fillRect(shoots[i], shoots[i + 1], 5, 5);
+      }
+      ctx.stroke();
     }
+  }
+
+  function enemyShots(ctx, stringShots) {
+    const shots = stringShots.split("@");
+    for (let i = 0; i < shots.length; i += 2) {
+      ctx.beginPath();
+      ctx.strokeStyle = "black";
+      ctx.fillRect(shots[i], shots[i + 1], 5, 5);
+      ctx.stroke();
+    }
+  }
+
+  function renderSquare(ctx, x, y, width, height, angle) {
+    const radAngle = (angle * Math.PI) / 180;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(radAngle);
+    ctx.translate(-x, -y);
+    ctx.fillRect(x - width / 2, y - height / 2, width, height);
+    ctx.restore();
+  }
+
+  function renderCircle(ctx, x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
     ctx.stroke();
+  }
+
+  function renderSpacenemy(ctx, x, y) {
+    if (image) {
+      ctx.beginPath();
+      ctx.strokeStyle = "black";
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + 20, y + -10);
+      ctx.lineTo(x + 30, y + -10);
+      ctx.lineTo(x + 50, y + -30);
+      ctx.lineTo(x + 70, y + -10);
+      ctx.lineTo(x + 70, y + 10);
+      ctx.lineTo(x + 50, y + 30);
+      ctx.lineTo(x + 50, y + 30);
+      ctx.lineTo(x + 30, y + 10);
+      ctx.lineTo(x + 20, y + 10);
+      ctx.lineTo(x, y);
+
+      ctx.stroke();
+      ctx.drawImage(image, x + 4, y - 30);
+    }
   }
 
   function renderEnemies(enemies, ctx) {
     ctx.beginPath();
-
-    for (let i = 0; i < enemies.length; i += 6) {
+    for (let i = 0; i < enemies.length; i += 8) {
       const x = parseInt(enemies[i + 0]);
       const y = parseInt(enemies[i + 1]);
-      // const life = parseInt(enemies[i + 2]);
       const width = parseInt(enemies[i + 3]);
       const height = parseInt(enemies[i + 4]);
       const angle = parseInt(enemies[i + 5]);
-      const radAngle = (angle * Math.PI) / 180;
+      const type = enemies[i + 6];
+      const shots = enemies[i + 7];
 
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(radAngle);
-      ctx.translate(-x, -y);
-      ctx.fillRect(x - width / 2, y - height / 2, width, height);
-      ctx.restore();
+      if (shots && shots.length > 0) {
+        enemyShots(ctx, shots);
+      }
+
+      if (type === "square") {
+        renderSquare(ctx, x, y, width, height, angle);
+      } else if (type === "circle") {
+        renderCircle(ctx, x, y);
+      } else if (type === "spacenemy") {
+        renderSpacenemy(ctx, x, y);
+      }
     }
     ctx.stroke();
   }
@@ -135,10 +198,10 @@ function Game() {
     if (playerB.length > 0) {
       renderPlayer(playerB, ctx);
     }
-    if (shoots.length > 0) {
+    if (shoots.length > 0 && shoots[0] !== "") {
       renderShoots(shoots, ctx);
     }
-    if (enemies.length > 0) {
+    if (enemies.length > 0 && enemies[0] !== "") {
       renderEnemies(enemies, ctx);
     }
   };
@@ -180,14 +243,14 @@ function Game() {
     }, 100);
   };
 
-  const handleKeyDownCustom = (e) => {
+  const handlekeydow = (e) => {
     const key = e.code === "Space" ? e.code : keyMap[e.key];
     if (key && !keyPressed.includes(key)) {
       keyPressed.push(key);
     }
   };
 
-  const handleKeyUpCustom = (e) => {
+  const handlekeyupcustom = (e) => {
     if (e.code === "Space") {
       newSocket.emit("shoot");
     } else {
@@ -208,8 +271,8 @@ function Game() {
       {/* {data && <div> Life: {data.find((d) => d.id === socket.id)?.life}</div>} */}
       <Canvas
         draw={draw}
-        handleKeyDownCustom={handleKeyDownCustom}
-        handleKeyUpCustom={handleKeyUpCustom}
+        handlekeydow={handlekeydow}
+        handlekeyupcustom={handlekeyupcustom}
       />
     </div>
   );
