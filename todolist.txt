@@ -1,5 +1,7 @@
 *Features*
 
+refact collision function
+refact loop game
 
 SpaceshipEnemy lv1 - atack (done) - move shot enemy to game
 SpaceshipEnemy lv2 - move to player y and atack
