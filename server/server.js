@@ -133,7 +133,7 @@ server.listen(3333, () => {
 });
 
 function handleBearer(bearer) {
+  if (process.env.NODE_ENV === "dev") return true;
   const token = bearer;
-  // return jwt.verify(token, SESSION_SECRET);
-  return true;
+  return jwt.verify(token, SESSION_SECRET);
 }

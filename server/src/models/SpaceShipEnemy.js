@@ -18,13 +18,22 @@ class SpaceShipEnemy extends Enemy {
   update() {
     super.update();
     this.shots.forEach((shot) => {
-      shot.update();
+      if (shot.isVisible()) {
+        shot.update();
+      } else {
+        this.shots.splice(this.shots.indexOf(shot), 1);
+      }
     });
+  }
+  canDestoy() {
+    return (this.shots.length === 0 && !this.live) || this.x < -20;
   }
   shoot() {
     this.shootInterval = setInterval(() => {
-      const shot = new Shot(this.x, this.y, -10);
-      this.shots.push(shot);
+      if (this.live) {
+        const shot = new Shot(this.x, this.y, -10);
+        this.shots.push(shot);
+      }
     }, 1500);
   }
   destroy() {
