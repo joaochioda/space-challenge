@@ -21,7 +21,7 @@ const Login = () => {
   const { user, error, loginTwitch, loginGoogle } = useContext(UserContext);
 
   if (error) {
-    return <p>Sorry we are having problems with our servers!</p>;
+    return <p>{error}</p>;
   }
 
   function renderComponents() {
@@ -31,8 +31,6 @@ const Login = () => {
           <Main />
         </Suspense>
       );
-    } else if (error) {
-      return <p>Sorry we are having problems with our servers!</p>;
     } else {
       return (
         <OAuthDiv>
