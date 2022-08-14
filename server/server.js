@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
 
 app.get("/me", (req, res) => {
   try {
-    // res.send({ name: "John Doe" });
     if (
       req?.headers?.authorization &&
       req?.headers?.authorization?.split(" ")[0] === "Bearer"
@@ -47,7 +46,7 @@ app.get("/me", (req, res) => {
       res.status(401).send("Unauthorized");
     }
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(500).send("Unauthorized");
   }
 });
 
@@ -98,6 +97,7 @@ io.on("connection", (socket) => {
         if (roomFound.players.length === 1) {
           roomFound.players.push(socket.id);
           const player = players.find((p) => p.id === roomFound.players[0]);
+          console.log(player);
           const gameObj = new Game([player, socket], roomFound.id);
           games.push(gameObj);
           socket.emit("joinedRoom", room);
