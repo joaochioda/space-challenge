@@ -9,7 +9,8 @@ class SpaceShipEnemy extends Enemy {
     this.level = level;
     this.shots = [];
     this.maxShots = 3;
-    this.shoot();
+    this.frame = 0;
+    this.shootInterval = 60;
   }
 
   spaw() {
@@ -17,6 +18,7 @@ class SpaceShipEnemy extends Enemy {
   }
   update() {
     super.update();
+    this.frame++;
     this.shots.forEach((shot) => {
       if (shot.isVisible()) {
         shot.update();
@@ -24,20 +26,17 @@ class SpaceShipEnemy extends Enemy {
         this.shots.splice(this.shots.indexOf(shot), 1);
       }
     });
+    this.shoot();
   }
   canDestoy() {
     return (this.shots.length === 0 && !this.live) || this.x < -20;
   }
   shoot() {
-    this.shootInterval = setInterval(() => {
-      if (this.live) {
-        const shot = new Shot(this.x, this.y, -10);
-        this.shots.push(shot);
-      }
-    }, 1500);
-  }
-  destroy() {
-    clearInterval(this.shootInterval);
+    if (this.live && this.frame % this.shootInterval === 0) {
+      const shot = new Shot(this.x, this.y, -10);
+      this.shots.push(shot);
+      this.frame = 0;
+    }
   }
 }
 

@@ -90,12 +90,6 @@ class Enemy {
     return !this.live || this.x < -10;
   }
   kill() {
-    this.x = 0;
-    this.y = 0;
-    this.life = 0;
-    this.height = 0;
-    this.width = 0;
-    this.angle = 0;
     this.type = "";
     this.live = false;
   }
