@@ -3,17 +3,7 @@ const Enemy = require("./Enemy");
 const SpaceShipEnemy = require("./SpaceShipEnemy");
 
 const { System } = require("detect-collisions");
-
-const typesEnemy = (int) => {
-  switch (int) {
-    case 0:
-      return "square";
-    case 1:
-      return "circles";
-    case 2:
-      return "triangle";
-  }
-};
+const { enemiesToString, shootsToString } = require("../utils");
 
 class Game {
   constructor(players, roomId) {
@@ -21,21 +11,26 @@ class Game {
     this.playerB = new Player(players[1], "b");
     this.enemies = [];
     this.system = new System();
-    this.startGame();
-    this.spawnEnemy();
     this.roomId = roomId;
+    this.frame = 0;
+    this.spawnInterval = 60;
+    this.runGame();
   }
-  startGame() {
+
+  runGame() {
     this.startGameInterval = setInterval(() => {
       this.playerA.update();
       this.playerB.update();
       this.sendDataTofront();
       this.moveEnemies();
       this.checkEnemyCollision();
+      this.spawnEnemy();
+      this.frame++;
     }, 1000 / 40);
   }
+
   spawnEnemy() {
-    this.spawnEnemyInterval = setInterval(() => {
+    if (this.frame % this.spawnInterval === 0) {
       const spin = Math.random() * (1 - 0) + 0 > 0.5 ? true : false;
       // const randomEnemy = Math.floor(Math.random() * (2 - 0) + 0);
 
@@ -51,7 +46,7 @@ class Game {
         1
       );
       this.enemies.push(spaceShip);
-    }, 6000);
+    }
   }
 
   moveEnemies() {
@@ -70,76 +65,28 @@ class Game {
   }
 
   checkEnemyCollision() {
-    this.enemies.forEach((enemy) => {
-      if (this.system.checkCollision(this.playerA.Shape, enemy.Shape)) {
-        enemy.destroy();
-        this.enemies.splice(this.enemies.indexOf(enemy), 1);
-        this.playerA.takeDamage(enemy.damage);
-      }
-      if (this.system.checkCollision(this.playerB.Shape, enemy.Shape)) {
-        enemy.destroy();
-        this.enemies.splice(this.enemies.indexOf(enemy), 1);
-        this.playerB.takeDamage(enemy.damage);
-      }
-    });
+    const players = [this.playerA, this.playerB];
 
-    this.playerA.shoots.forEach((shoot) => {
+    players.forEach((player) => {
       this.enemies.forEach((enemy) => {
-        if (
-          enemy.live &&
-          this.system.checkCollision(shoot.Shape, enemy.Shape)
-        ) {
-          enemy.life -= shoot.damage;
-          enemy.kill();
-          this.playerA.shoots.splice(this.playerA.shoots.indexOf(shoot), 1);
-          // this.enemies.splice(this.enemies.indexOf(enemy), 1);
+        //check player collision with enemies
+        if (this.system.checkCollision(player.Shape, enemy.Shape)) {
+          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+          player.takeDamage(enemy.damage);
         }
+        //check player collision with shoots
+        player.shoots.forEach((shoot) => {
+          if (
+            enemy.live &&
+            this.system.checkCollision(shoot.Shape, enemy.Shape)
+          ) {
+            enemy.life -= shoot.damage;
+            enemy.kill();
+            player.shoots.splice(player.shoots.indexOf(shoot), 1);
+          }
+        });
       });
     });
-    this.playerB.shoots.forEach((shoot) => {
-      this.enemies.forEach((enemy) => {
-        if (
-          enemy.live &&
-          this.system.checkCollision(shoot.Shape, enemy.Shape)
-        ) {
-          enemy.life -= shoot.damage;
-          enemy.kill();
-          this.playerB.shoots.splice(this.playerB.shoots.indexOf(shoot), 1);
-          // this.enemies.splice(this.enemies.indexOf(enemy), 1);
-        }
-      });
-    });
-  }
-
-  shootsToString() {
-    const shoots = this.playerA.shoots.concat(this.playerB.shoots);
-    return shoots
-      .map((shoot) => {
-        return `${shoot.x.toFixed(0)},${shoot.y.toFixed(0)}`;
-      })
-      .join(",");
-  }
-
-  enemiesToString() {
-    return this.enemies
-      .map((enemy) => {
-        let stringShotsEnemy = "";
-        if (enemy.shots && enemy.shots.length > 0) {
-          enemy.shots.forEach((shoot, idx) => {
-            if (idx === enemy.shots.length - 1) {
-              stringShotsEnemy += `${shoot.x.toFixed(0)}@${shoot.y.toFixed(0)}`;
-            } else {
-              stringShotsEnemy += `${shoot.x.toFixed(0)}@${shoot.y.toFixed(
-                0
-              )}@`;
-            }
-          });
-        }
-        return `${enemy.x.toFixed(0)},${enemy.y.toFixed(0)},${enemy.life},${
-          enemy.width
-        },${enemy.height},${enemy.angle},${enemy.type},${stringShotsEnemy}`;
-      })
-      .join(",");
   }
 
   sendDataTofront() {
@@ -151,7 +98,9 @@ class Game {
       this.playerB.life
     },${this.playerB.width},${this.playerB.height},${this.playerB.id},${
       this.playerB.movimentation
-    }/${this.shootsToString()}/${this.enemiesToString()}`;
+    }/${shootsToString(this.playerA, this.playerB)}/${enemiesToString(
+      this.enemies
+    )}`;
     this.playerA.socket.emit("gameData", data);
     this.playerB.socket.emit("gameData", data);
   }
@@ -159,7 +108,6 @@ class Game {
     this.playerA.socket.disconnect();
     this.playerB.socket.disconnect();
     clearInterval(this.startGameInterval);
-    clearInterval(this.spawnEnemyInterval);
   }
 }
 
