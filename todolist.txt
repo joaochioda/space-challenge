@@ -6,6 +6,8 @@ SpaceshipEnemy lv3 - move to player y and atack and shot missile
 Boss (states =
 missile system - object that follows player x/y and can be destroyed 
 
+
+change canvas by pixijs?
 Game state
 Power itens (do brainstorm functionalities)
 Boss
