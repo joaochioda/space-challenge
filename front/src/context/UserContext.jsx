@@ -40,11 +40,14 @@ export default function UserProvider(props) {
             }
             else if (!user) {
                 const response = await http.get(`/me`);
-                if (response) {
+                if (response && response.status === 200) {
                     setUser(response.data);
-                } else {
+                } else if (response && response.status === 401) {
+                    setError('Redireting')
+                }
+                else {
                     setUser(null);
-                    setError('No user found');
+                    setError('Sorry we are having problems with our servers!');
                 }
             }
         } catch (ex) {
