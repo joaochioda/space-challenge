@@ -1,5 +1,8 @@
-*Features*
+*Bugs*
+Return 401 when jwt is wrong
 
+*Features*
+Change storage jwt to cookie
 SpaceshipEnemy lv1 - atack (done) - move shot enemy to game
 SpaceshipEnemy lv2 - move to player y and atack
 SpaceshipEnemy lv3 - move to player y and atack and shot missile
