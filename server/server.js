@@ -46,7 +46,7 @@ app.get("/me", (req, res) => {
       res.status(401).send("Unauthorized");
     }
   } catch (err) {
-    res.status(500).send("Unauthorized");
+    res.status(401).send("Unauthorized");
   }
 });
 

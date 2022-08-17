@@ -1,11 +1,20 @@
-*Features*
+*Todo*
+Image and name opponent
+Damage/life player
+life enemy
 
+*Ideas*
+*Bugs*
+Return 401 when jwt is wrong
+
+*Features*
+Change storage jwt to cookie
 SpaceshipEnemy lv1 - atack (done) - move shot enemy to game
+>>>>>>> c538175960777e56570274c5a7c63106b4e95477
 SpaceshipEnemy lv2 - move to player y and atack
 SpaceshipEnemy lv3 - move to player y and atack and shot missile
 Boss (states =
 missile system - object that follows player x/y and can be destroyed 
-
 
 change canvas by pixijs?
 Game state
