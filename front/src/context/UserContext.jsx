@@ -43,7 +43,7 @@ export default function UserProvider(props) {
                 if (response && response.status === 200) {
                     setUser(response.data);
                 } else if (response && response.status === 401) {
-                    setError('Redireting')
+                    setError('Redirecting')
                 }
                 else {
                     setUser(null);
