@@ -20,7 +20,7 @@ Twitch sign up - aws (lambda function)
 
 Google sign up - aws (lambda function) - doing
 
-host - https://www.afeseila.co/
+host - route 53 (disabled)
 
 ## Initial ideia
 ![space-challenge](https://user-images.githubusercontent.com/47106171/177225257-ce5b477c-06a7-4bb8-8c52-3aa437000605.png)
