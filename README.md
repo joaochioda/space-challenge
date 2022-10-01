@@ -18,7 +18,7 @@ Infra - aws (ec2)
 
 Twitch sign up - aws (lambda function)
 
-Google sign up - aws (lambda function) - doing
+Google sign up - aws (lambda function)
 
 host - route 53 (disabled)
 
